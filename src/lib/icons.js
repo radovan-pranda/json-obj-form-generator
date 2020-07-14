@@ -1,0 +1,6 @@
+import React from 'react';
+
+export const copy = <svg className="jofgen-D-icon jofgen-D-icon-copy" viewBox="0 0 24 24" ><path fill="#fff" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" /></svg>;
+export const copy_success = <svg className="jofgen-D-icon jofgen-D-icon-copy-success" viewBox="0 0 24 24" ><path fill="#fff" d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z" /></svg>;
+export const copy_failed = <svg className="jofgen-D-icon jofgen-D-icon-copy-failed" viewBox="0 0 24 24" ><path fill="#fff" d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" /></svg>;
+export const close = <svg className="jofgen-D-icon jofgen-D-icon-close" viewBox="0 0 24 24" ><path fill="#fff" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>;
