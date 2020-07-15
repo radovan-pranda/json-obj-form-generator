@@ -195,7 +195,7 @@ export class SectionPackage extends Component {
                     name="uid"
                     type="text"
                     value={this.props.value.uid} onChange={this.onChange}
-                    invalid={!(this.props.value.uid.length > 0) && this.props.invalid}
+                    invalid={this.props.value.uid.length === 0 || this.props.invalid}
                     bsSize={this.props.size}
                   />
                   <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
@@ -232,7 +232,7 @@ export class SectionPackage extends Component {
                   <Row style={{ opacity: "1", height: "1.8rem" }}>
                     <Col>
                       <div className="hr"></div>
-                      <Button color="light" className="btn-add-element" onClick={(e) => { this.addChildren(0); }} >
+                      <Button size={this.props.size} color="light" className="btn-add-element" onClick={(e) => { this.addChildren(0); }} >
                         {this.props.translation.addSection}
                       </Button>
                     </Col>
@@ -247,6 +247,7 @@ export class SectionPackage extends Component {
                       return (
                         <Fragment key={idx}>
                           <Container
+                            size={this.props.size}
                             onUpButtonClick={(idx > 0) ? (() => this.changePosition(idx, -1)) : undefined}
                             onDownButtonClick={(idx < no_of_elements) ? (() => this.changePosition(idx, 1)) : undefined}
                             onRemoveButtonClick={() => this.removeChildren(idx)}
@@ -256,6 +257,7 @@ export class SectionPackage extends Component {
                             extended={this.props.extended}
                           >
                             <Tag 
+                              size={this.props.size}
                               invalid={this.props.invalid[1][idx]}
                               uids={this.props.uids[1][idx]}
                               valid={this.props.valid[1][idx]}
@@ -283,7 +285,7 @@ export class SectionPackage extends Component {
                             <Row style={{ opacity: "1", height: "1.8rem" }}>
                               <Col>
                                 <div className="hr"></div>
-                                <Button color="light" className="btn-add-element" onClick={(e) => { this.addChildren(idx + 1); }} >
+                                <Button size={this.props.size} color="light" className="btn-add-element" onClick={(e) => { this.addChildren(idx + 1); }} >
                                   {this.props.translation.addSection}
                                 </Button>
                               </Col>

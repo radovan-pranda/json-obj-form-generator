@@ -45,7 +45,7 @@ export default class Extensor extends Component {
                           {this.props.icons.icon}
                         </td>
                         <td>
-                          <CustomInput id={this.state.gId} className="dropdown" type="select" value={this.props.value} onChange={(e) => { this.onChange(e.target.value) }} >
+                          <CustomInput bsSize={this.props.size} id={this.state.gId} className="dropdown" type="select" value={this.props.value} onChange={(e) => { this.onChange(e.target.value) }} >
                             {Object.keys(this.props.values).map((item,idx) => {
                               if (this.props.names[item] !== undefined) {
                                 return (<option key={idx} value={item} >{this.props.names[item].title}</option>);
@@ -57,10 +57,10 @@ export default class Extensor extends Component {
                           </CustomInput>
                         </td>
                         <td className="jofgen-D-ext--btns-container" >
-                          <Button color="jofgen-D-theme" className="jofgen-D-ext--btn-add btn-primary btn-sm" disabled={this.props.onSubmit === undefined} onClick={() => { this.onSubmit(); }} >
+                          <Button size={this.props.size} color="jofgen-D-theme" className="jofgen-D-ext--btn-add btn-primary" disabled={this.props.onSubmit === undefined} onClick={() => { this.onSubmit(); }} >
                             {this.props.translation.add}
                           </Button>
-                          <Button color="jofgen-D-theme" className="jofgen-D-ext--btn-drop btn-danger btn-sm" onClick={() => { this.setState({ cardShow: false, addElementShow: true }); }} >
+                          <Button size={this.props.size} color="jofgen-D-theme" className="jofgen-D-ext--btn-drop btn-danger" onClick={() => { this.setState({ cardShow: false, addElementShow: true }); }} >
                             {this.props.icons.drop}
                           </Button>
                         </td>
@@ -79,7 +79,7 @@ export default class Extensor extends Component {
         <Row style={{ opacity: ((this.state.addElementShow && !this.state.cardShow) ? "1" : "0"), height: ((this.state.addElementShow && !this.state.cardShow) ? "1.8rem" : "0") }}>
           <Col>
             <div className="hr"></div>
-            <Button color="light" className="btn-add-element" onClick={() => { this.setState({ cardShow: true, addElementShow: false }); }} >
+            <Button color="light" className="btn-add-element" onClick={() => { this.setState({ cardShow: true, addElementShow: false }); }} size={this.props.size} >
               {this.props.icons.addComponent} {this.props.translation.addComponent}
             </Button>
           </Col>

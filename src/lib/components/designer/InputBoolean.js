@@ -123,7 +123,7 @@ export class InputBoolean extends Component {
                     name="uid"
                     type="text"
                     value={this.props.value.uid} onChange={this.onChange}
-                    invalid={!(this.props.value.uid.length > 0) && this.props.invalid}
+                    invalid={this.props.value.uid.length === 0 || this.props.invalid}
                     bsSize={this.props.size}
                   />
                   <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
@@ -195,6 +195,7 @@ export class InputBoolean extends Component {
                 ((this.props.value.default) ? { err_default: this.props.value.err_default } : null)
               )
             }
+            size={this.props.size}
             errors={{ err_default: this.props.translation.errors["err_default"] }}
             translation={{ title: this.props.translation.errors.title, alert: this.props.translation.errors.alert }}
             onChange={this.onChangeError} />

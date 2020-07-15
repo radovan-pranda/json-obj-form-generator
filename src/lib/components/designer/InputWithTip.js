@@ -43,6 +43,7 @@ export default class InputWithTip extends Component {
             type={this.props.type} bsSize={this.props.size}
             placeholder={this.props.placeholder}
             min={this.props.min}
+            bsSize={this.props.size}
             min={this.props.max}
             minLength={this.props.minLength}
             maxLength={this.props.maxLength}

@@ -165,7 +165,7 @@ export class InputInteger extends Component {
                   name="uid"
                   type="text"
                   value={this.props.value.uid} onChange={this.onChange}
-                  invalid={!(this.props.value.uid.length > 0)}
+                  invalid={this.props.value.uid.length === 0 || this.props.invalid}
                   bsSize={this.props.size}
                 />
                 <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
@@ -278,6 +278,7 @@ export class InputInteger extends Component {
 
       <Fragment>
         <ErrorContainer
+          size={this.props.size}
           jkey={{ prefix: this.state.gId + "-err", sufix: "" }}
           values={
             Object.assign({},
@@ -300,6 +301,7 @@ export class InputInteger extends Component {
       </Fragment>
       <Fragment>
         <ErrorContainer
+          size={this.props.size}
           className="jofgen-D-warning"
           jkey={{ prefix: this.state.gId + "-", sufix: "warn" }}
           icons={{ icon: this.props.icons.warnings, invalid_icon: this.props.icons.warningsAlert }}

@@ -186,7 +186,7 @@ export class Section extends Component {
                     name="uid"
                     type="text"
                     value={this.props.value.uid} onChange={this.onChange}
-                    invalid={!(this.props.value.uid.length > 0) && this.props.invalid}
+                    invalid={this.props.value.uid.length === 0 || this.props.invalid}
                     bsSize={this.props.size}
                   />
                   <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
@@ -226,6 +226,7 @@ export class Section extends Component {
                 <Col sm={12} className="jofgen-D-input-col">
 
                   <Extensor
+                    size={this.props.size}
                     style={{ paddingBottom: "10px" }}
                     names={this.props.translations.types}
                     values={this.props.designer_aliases}
@@ -240,6 +241,7 @@ export class Section extends Component {
                         return (
                           <Fragment key={idx}>
                             <Container
+                              size={this.props.size}
                               onUpButtonClick={(idx > 0) ? (() => this.changePosition(idx, -1)) : undefined}
                               onDownButtonClick={(idx < no_of_elements) ? (() => this.changePosition(idx, 1)) : undefined}
                               onRemoveButtonClick={() => this.removeChildren(idx)}
@@ -275,6 +277,7 @@ export class Section extends Component {
                               />
                             </Container>
                             <Extensor
+                              size={this.props.size}
                               key={this.state.gId + "-e-" + idx}
                               style={{ paddingBottom: "10px" }}
                               names={this.props.translations.types}

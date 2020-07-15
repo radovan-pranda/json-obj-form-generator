@@ -19,7 +19,7 @@ export default class Container extends Component {
 
     if (this.props.onUpButtonClick !== undefined || !this.props.hideDissabled) {
       upBtn = <Fragment>
-          <Button className="btn-up" disabled={(this.props.onUpButtonClick === undefined)} color="light" size="sm" onClick={this.props.onUpButtonClick} >
+          <Button className="btn-up" disabled={(this.props.onUpButtonClick === undefined)} color="light" size={this.props.size} onClick={this.props.onUpButtonClick} >
             { this.props.icons.arrowUp }
           </Button>
       </Fragment>;
@@ -27,7 +27,7 @@ export default class Container extends Component {
     
     if (this.props.onDownButtonClick !== undefined || !this.props.hideDissabled) {
       downBtn = <Fragment>
-        <Button className="btn-down" disabled={(this.props.onDownButtonClick === undefined)} color="light" size="sm" onClick={this.props.onDownButtonClick} >
+        <Button className="btn-down" disabled={(this.props.onDownButtonClick === undefined)} color="light" size={this.props.size} onClick={this.props.onDownButtonClick} >
           { this.props.icons.arrowDown }
         </Button>
       </Fragment>;
@@ -35,7 +35,7 @@ export default class Container extends Component {
 
     if (this.props.onRemoveButtonClick !== undefined) {
       dropBtn = <Fragment>     
-        <Button className="btn-remove" disabled={(this.props.onRemoveButtonClick === undefined)} color="light" size="sm" onClick={this.props.onRemoveButtonClick} >
+        <Button className="btn-remove" disabled={(this.props.onRemoveButtonClick === undefined)} color="light" size={this.props.size} onClick={this.props.onRemoveButtonClick} >
           {this.props.icons.drop}
         </Button>
       </Fragment>;
@@ -43,7 +43,7 @@ export default class Container extends Component {
 
     if (this.props.extended) {
       viewBtn = <Fragment>     
-        <Button className="btn-view" color="light" size="sm" onClick={this.onViewClick} >
+        <Button className="btn-view" color="light" size={this.props.size} onClick={this.onViewClick} >
           {(this.state.view)
             ?(this.props.icons.view)
             :(this.props.icons.unview)

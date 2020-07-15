@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Default_GkeyPropType, keyPropType, unique_id_test } from './utils';
+
 import {
   Container,
   metaValueToTree, metaValueToLinear, metaValueToLinearMerge,
@@ -8,6 +9,7 @@ import {
   jsonToMeta_Tree,
   invalidCheck
 } from './components/generator';
+import { isValid, getUids, jsonValid, jsonToMeta } from './components/designer';
 import { generator_aliases } from './components/shared';
 import { fatal_error } from './components/generator/icons';
 
@@ -38,8 +40,13 @@ export default class Generator extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
 
     if (!prevState.flag) {
+      
+      var uids = getUids(nextProps.json);
+      var meta = jsonToMeta(nextProps.json);
+      var valid = jsonValid(meta);
+
       try {
-        if (!unique_id_test(nextProps.json, nextProps.mode, nextProps.sep)) {
+        if (!isValid(uids, valid, nextProps.mode)) {
           return { fatal_error: true };
         }
 
@@ -192,7 +199,12 @@ Generator.propTypes = {
       return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be object or array of objects.');
     }
 
-    if (!unique_id_test(props[propName], props["mode"], props["sep"])) {
+    
+    var uids = getUids(props[propName]);
+    var meta = jsonToMeta(props[propName]);
+    var valid = jsonValid(meta);
+
+    if (!isValid(uids, valid, props["mode"])) {
       return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. JSON object is not valid - some IDs are not unique.');
     }
 

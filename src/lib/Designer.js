@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalBody, Input } from 'reactstrap';
+
 import { Container as DesignerContainer, Extensor, isValid, recursive_get_unique_valid, getUids, jsonValid, jsonToMeta } from './components/designer';
 import { keyPropType, Default_DkeyPropType } from './utils';
 import { copy, close as closeIcon, copy_success, copy_failed } from './icons';
@@ -263,13 +264,13 @@ export default class Designer extends Component {
     if (this.props.extended)
     {
       extendedBtn = <Fragment>
-        <Button onClick={this.preview} color="success" active={this.state.view} >{(this.state.view)?(<>{this.props.icons.designer}{this.props.translation.backToDesigner}</>):(<>{this.props.icons.preview}{this.props.translation.formPreview}</>)}</Button>
+        <Button onClick={this.preview} color="success" size={this.props.size} active={this.state.view} >{(this.state.view)?(<>{this.props.icons.designer}{this.props.translation.backToDesigner}</>):(<>{this.props.icons.preview}{this.props.translation.formPreview}</>)}</Button>
       </Fragment>; 
     }
 
     if (this.props.export) {
       exportBtn = <Fragment>
-        <Button className="ml-1" onClick={this.exportJSON} color="primary" >{this.props.icons.export}{this.props.translation.export}</Button>
+        <Button className="ml-1" onClick={this.exportJSON} color="primary" size={this.props.size} >{this.props.icons.export}{this.props.translation.export}</Button>
         <Modal isOpen={this.state.exportOpen} size="lg" centered={true} >
           <ModalBody>
             <table className="jofgen-D-title" style={{ width: "100%" }}>
@@ -277,8 +278,8 @@ export default class Designer extends Component {
                 <tr>
                   <td><h5>{this.props.translation.export}</h5></td>
                   <td style={{ fontWeight: "bold", textAlign: "right" }}>
-                    <Button onClick={this.copyToClipboard} >{this.props.icons.copy} {this.props.translation.copyToClipboard}</Button>
-                    <Button color="link" onClick={this.exportJSON} >{this.props.icons.close}</Button>
+                    <Button onClick={this.copyToClipboard} size={this.props.size} >{this.props.icons.copy} {this.props.translation.copyToClipboard}</Button>
+                    <Button color="link" onClick={this.exportJSON} size={this.props.size} >{this.props.icons.close}</Button>
                   </td>
                 </tr>
               </tbody>
@@ -345,6 +346,7 @@ export default class Designer extends Component {
           style={{ paddingBottom: "10px" }}
           names={this.props.translation.types}
           values={designer_aliases}
+          size={this.props.size}
           onSubmit={(e) => { this.addChildren(0, e); }}
         />
         {this.state.meta.map(
@@ -360,6 +362,7 @@ export default class Designer extends Component {
                     onRemoveButtonClick={() => this.removeChildren(idx)}
                     hideDissabled={false}
                     extras={this.state.sub_items[idx]}
+                    size={this.props.size}
                     icons={this.props.icons.container}
                     extended={this.props.extended} >
                     <Tag
@@ -389,6 +392,7 @@ export default class Designer extends Component {
                     style={{ paddingBottom: "10px" }}
                     names={this.props.translation.types}
                     values={designer_aliases}
+                    size={this.props.size}
                     onSubmit={(e) => { this.addChildren(idx + 1, e); }}
                   />
                 </Fragment>);

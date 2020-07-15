@@ -153,7 +153,7 @@ export class InputCustom extends Component {
                   name="uid"
                   type="text"
                   value={this.props.value.uid} onChange={this.onChange}
-                  invalid={!(this.props.value.uid.length > 0)}
+                  invalid={this.props.value.uid.length === 0 || this.props.invalid}
                   bsSize={this.props.size}
                 />
                 <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
@@ -254,6 +254,7 @@ export class InputCustom extends Component {
       <Fragment>
         <ErrorContainer
           jkey={{ prefix: this.state.gId + "-err", sufix: "" }}
+          size={this.props.size}
           values={
             Object.assign({},
               ((this.props.value.required) ? { err_req: this.props.value.err_req } : null),
@@ -271,6 +272,7 @@ export class InputCustom extends Component {
       <Fragment>
         <ErrorContainer
           className="jofgen-D-warning"
+          size={this.props.size}
           jkey={{ prefix: this.state.gId + "-", sufix: "warn" }}
           icons={{ icon: this.props.icons.warnings, invalid_icon: this.props.icons.warningsAlert }}
           values={
