@@ -12,10 +12,15 @@
 npm install --save json-obj-form-generator
 ```
 
+> **WARNING:** This library uses and extends bootstrap styles. 
+
+
 ## Usage of designer
 
 ```jsx
 import { JOFGENDesigner } from 'json-obj-form-generator';
+import 'bootstrap/dist/css/bootstrap.css'; # most styles are from bootstrap library
+import 'json-obj-form-generator/dist/css/designer.css';
 
 ...
 
@@ -38,6 +43,8 @@ import { JOFGENDesigner } from 'json-obj-form-generator';
 ## Usage of generator
 ```jsx
 import { JOFGENGenerator } from 'json-obj-form-generator';
+import 'bootstrap/dist/css/bootstrap.css'; # most styles are from bootstrap library
+import 'json-obj-form-generator/dist/css/generator.css';
 
 ...
 
