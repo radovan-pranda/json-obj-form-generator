@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalBody, Input } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/designer.css'
 
 import { Container as DesignerContainer, Extensor, isValid, recursive_get_unique_valid, getUids, jsonValid, jsonToMeta } from './components/designer';

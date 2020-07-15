@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Default_GkeyPropType, keyPropType, unique_id_test } from './utils';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/generator.css'
 import {
   Container,
