@@ -3,6 +3,8 @@
 > generate forms from JSON object
 
 [![NPM](https://img.shields.io/npm/v/json-obj-form-generator.svg)](https://www.npmjs.com/package/json-obj-form-generator) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![License](https://img.shields.io/npm/l/json-obj-form-generator.svg)](https://github.com/radovan-pranda/json-obj-form-generator/blob/master/LICENSE)
+
 
 ## Install
 
