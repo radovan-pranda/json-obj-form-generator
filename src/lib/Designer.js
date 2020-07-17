@@ -54,6 +54,12 @@ export default class Designer extends Component {
         var nextState = {};
 
         if (nextProps.json !== undefined) {
+          if (typeof nextProps.json !== "object" || !Array.isArray(nextProps.json))
+          {
+            console.error("Parameter JSON must be array"); 
+            return { fatal_error: true }
+          }
+
           nextState.uids = getUids(nextProps.json);
           nextState.meta = jsonToMeta(nextProps.json);
           nextState.sub_items = nextProps.json;

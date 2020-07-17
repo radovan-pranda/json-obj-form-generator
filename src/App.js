@@ -8,15 +8,15 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      json: []
     }
   }
 
   render() {
     return (
       <div>
-        <JOFGENDesigner size="sm" onChange={(e, v) => { console.log(v); this.setState({ json: e }) }} />
-        <JOFGENGenerator json={this.state.json} />
+        <JOFGENDesigner json={this.state.json} value={{}}  size="sm" onChange={(e, v) => { console.log(v); this.setState({ json: e }) }} export={true} />
+        <JOFGENGenerator json={this.state.json} value={{}}  />
       </div>
     );
   }

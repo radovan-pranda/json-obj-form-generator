@@ -40,7 +40,11 @@ export default class Generator extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
 
     if (!prevState.flag) {
-      
+      if (typeof nextProps.json !== "object" || !Array.isArray(nextProps.json)) {
+        console.error("Parameter JSON must be array"); 
+        return { fatal_error: true }
+      }
+
       var uids = getUids(nextProps.json);
       var meta = jsonToMeta(nextProps.json);
       var valid = jsonValid(meta);
@@ -199,7 +203,7 @@ Generator.propTypes = {
       return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be object or array of objects.');
     }
 
-    
+
     var uids = getUids(props[propName]);
     var meta = jsonToMeta(props[propName]);
     var valid = jsonValid(meta);
