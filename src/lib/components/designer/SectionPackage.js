@@ -174,7 +174,7 @@ export class SectionPackage extends Component {
               <tbody>
                 <tr>
                   <td className="jofgen-D-children" >
-                    {(invalid || this.props.invalid) ? this.props.icons.invalid_icon : this.props.icons.icon}
+                    {(invalid || this.props.invalid[0]) ? this.props.icons.invalid_icon : this.props.icons.icon}
                     <b>{this.props.translation.title}</b>
                   </td>
                   <td style={{ width: "50px", textAlign: "right" }}>
@@ -195,7 +195,7 @@ export class SectionPackage extends Component {
                     name="uid"
                     type="text"
                     value={this.props.value.uid} onChange={this.onChange}
-                    invalid={this.props.value.uid.length === 0 || this.props.invalid}
+                    invalid={this.props.value.uid.length === 0 || this.props.invalid[0]}
                     bsSize={this.props.size}
                   />
                   <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
@@ -337,7 +337,7 @@ SectionPackage.propTypes = {
 SectionPackage.defaultProps = {
   className: "",
   translation: Default_PackTranslation,
-  invalid: true,
+  invalid: [true, []],
   uids: [],
   icons: {
     icon: icon,
