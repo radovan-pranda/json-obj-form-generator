@@ -4,26 +4,13 @@ import { Default_GkeyPropType, keyPropType, unique_id_test } from './utils';
 
 import {
   Container,
-  metaValueToTree, metaValueToLinear, metaValueToLinearMerge,
-  valueToMeta_Tree, valueToMeta_LinearMerge, valueToMeta_Linear,
+  metaTo, toMeta,
   jsonToMeta_Tree,
   invalidCheck
 } from './components/generator';
 import { isValid, getUids, jsonValid, jsonToMeta } from './components/designer';
 import { generator_aliases } from './components/shared';
 import { fatal_error } from './components/generator/icons';
-
-const metaTo = {
-  tree: metaValueToTree,
-  linear_merge: metaValueToLinearMerge,
-  linear: metaValueToLinear
-}
-
-const toMeta = {
-  tree: valueToMeta_Tree,
-  linear_merge: valueToMeta_LinearMerge,
-  linear: valueToMeta_Linear
-}
 
 export default class Generator extends Component {
   state = {

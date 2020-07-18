@@ -59,7 +59,7 @@ export default class Designer extends Component {
             console.error("Parameter JSON must be array"); 
             return { fatal_error: true }
           }
-
+          
           nextState.uids = getUids(nextProps.json);
           nextState.meta = jsonToMeta(nextProps.json);
           nextState.sub_items = nextProps.json;
@@ -414,7 +414,6 @@ export default class Designer extends Component {
 
 Designer.propTypes = {
   onChange: PropTypes.func,
-  value: PropTypes.object,
   export: PropTypes.bool,
   json: PropTypes.arrayOf(PropTypes.object),
   json_compression: PropTypes.oneOf(["min", "max"]),

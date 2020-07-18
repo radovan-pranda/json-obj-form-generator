@@ -13,6 +13,7 @@ import { Paragraph, getErrors as p_valid } from './Paragraph';
 import { Section, getErrors as sec_valid } from './Section';
 import { SectionPackage, getErrors as pack_valid } from './SectionPackage';
 import Container from './Container';
+import { isValidDesignJSON } from './../designer';
 
 const aliases = {
     bool: { value: false, getErrors: b_valid, mustHaveValue: true },
@@ -375,6 +376,40 @@ export const invalidCheck = function(obj)
     }
 
     return subresult;
+}
+
+export const metaTo = {
+    tree: metaValueToTree,
+    linear_merge: metaValueToLinearMerge,
+    linear: metaValueToLinear
+  }
+  
+export const toMeta = {
+    tree: valueToMeta_Tree,
+    linear_merge: valueToMeta_LinearMerge,
+    linear: valueToMeta_Linear
+  }
+
+export const isValidValueJSON = function(json, value, mode, sep)
+{
+    var serial_mode = ( mode && ["tree", "linear", "linear_merge"].includes(mode))?mode:"tree";
+    var separator = (sep)?sep:".";
+
+    if (!isValidDesignJSON(json, serial_mode))
+    {
+        return false;
+    }   
+
+    var meta;
+    if (value !== undefined) {
+        meta = toMeta[serial_mode](json, value, separator);
+    }
+    else
+    {
+        meta = jsonToMeta_Tree(json);
+    }
+
+    return !invalidCheck(meta[1]);
 }
 
 export {

@@ -212,8 +212,6 @@ export const recursive_check_valid = function (valids) {
 
 
 export const isValid = function (ids, valids, mode) {
-    console.log(valids);
-    console.log(ids);
     if (!recursive_check_valid(valids)) {
         return false;
     }
@@ -292,6 +290,16 @@ export const jsonToMeta = function (e) {
     return result;
 }
 
+export const isValidDesignJSON = function (json, mode) {
+    try {
+        return isValid(getUids(json), jsonValid(jsonToMeta(json)), ( mode && ["tree", "linear", "linear_merge"].includes(mode))?mode:"tree");
+    }
+    catch
+    {
+        return false;
+    }
+}
+
 export {
     Container,
     Extensor,
@@ -307,5 +315,5 @@ export {
     InputListInteger,
     Paragraph,
     Section,
-    SectionPackage,
+    SectionPackage
 };
