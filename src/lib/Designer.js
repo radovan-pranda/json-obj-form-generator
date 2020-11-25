@@ -352,7 +352,8 @@ export default class Designer extends Component {
           style={{ paddingBottom: "10px" }}
           names={this.props.translation.types}
           values={designer_aliases}
-          size={this.props.size}
+          size={this.props.size}          
+          translation={this.props.translation}
           onSubmit={(e) => { this.addChildren(0, e); }}
         />
         {this.state.meta.map(
@@ -396,6 +397,7 @@ export default class Designer extends Component {
                   <Extensor
                     key={"e-" + idx}
                     style={{ paddingBottom: "10px" }}
+                    translation={this.props.translation}
                     names={this.props.translation.types}
                     values={designer_aliases}
                     size={this.props.size}
@@ -427,7 +429,9 @@ Designer.propTypes = {
     backToDesigner: PropTypes.string.isRequired,
     copy_success: PropTypes.string.isRequired,
     copy_fail: PropTypes.string.isRequired,
-    copyToClipboard: PropTypes.string.isRequired,
+    copyToClipboard: PropTypes.string.isRequired,    
+    add: PropTypes.string.isRequired,  
+    addComponent: PropTypes.string.isRequired,  
     types: PropTypes.exact({
       // primitives     
       bool: PropTypes.shape(BoolTranslationPropType),
@@ -591,7 +595,9 @@ Designer.defaultProps = {
     copyToClipboard: "Copy to clipboard",
     backToDesigner: "Back to designer",
     copy_success: "Successfully copied to clipboard",
-    copy_fail: "Oops .. Something went wrong. Copying to clipboard failed",
+    copy_fail: "Oops .. Something went wrong. Copying to clipboard failed",    
+    add: "Add",
+    addComponent: "Add component",
     types: {
       bool: Default_BoolTranslation,
       color: Default_ColorTranslation,

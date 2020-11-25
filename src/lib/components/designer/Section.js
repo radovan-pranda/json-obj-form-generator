@@ -230,6 +230,7 @@ export class Section extends Component {
                     style={{ paddingBottom: "10px" }}
                     names={this.props.translations.types}
                     values={this.props.designer_aliases}
+                    translation={this.props.translation}
                     onSubmit={(e) => { this.addChildren(0, e); }}
                   />
 
@@ -281,6 +282,7 @@ export class Section extends Component {
                               key={this.state.gId + "-e-" + idx}
                               style={{ paddingBottom: "10px" }}
                               names={this.props.translations.types}
+                              translation={this.props.translation}
                               values={this.props.designer_aliases}
                               onSubmit={(e) => { this.addChildren(idx + 1, e); }}
                             />

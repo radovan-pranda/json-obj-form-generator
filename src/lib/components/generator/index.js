@@ -36,31 +36,24 @@ const aliases = {
 }
 
 /* meta to value */
-export const metaValueToTree = function(obj, def, req, errs) 
-{
+export const metaValueToTree = function (obj, def, req, errs) {
     var result = {};
-    if (typeof obj === "object")
-    {    
+    if (typeof obj === "object") {
         var keys = Object.keys(obj);
         var len = keys.length;
         var key;
-        for (var i = 0; i < len; i++)
-        {   
+        for (var i = 0; i < len; i++) {
             key = keys[i];
-            if (typeof obj[key] === "object" && !Array.isArray(obj[key]) && obj[key] !== null)
-            {
+            if (typeof obj[key] === "object" && !Array.isArray(obj[key]) && obj[key] !== null) {
                 result[key] = metaValueToLinear(obj[key], def[key], req[key], errs[key]);
             }
-            else
-            {
-                if (def[key] !== null && req[key] && !errs[key].warn_def)
-                {
+            else {
+                if (def[key] !== null && req[key] && !errs[key].warn_def) {
                     result[key] = def[key];
                     continue;
                 }
 
-                if (obj[key] !== null)
-                {
+                if (obj[key] !== null) {
                     result[key] = obj[key];
                     continue;
                 }
@@ -71,32 +64,25 @@ export const metaValueToTree = function(obj, def, req, errs)
     return result;
 }
 
-export const metaValueToLinearMerge = function(obj, def, req, errs, sub_sep, parent) 
-{ 
-    var prefix = (parent === undefined)?"":parent+sub_sep;
+export const metaValueToLinearMerge = function (obj, def, req, errs, sub_sep, parent) {
+    var prefix = (parent === undefined) ? "" : parent + sub_sep;
     var result = {};
-    if (typeof obj === "object")
-    {    
+    if (typeof obj === "object") {
         var keys = Object.keys(obj);
         var len = keys.length;
         var key;
-        for (var i = 0; i < len; i++)
-        {   
+        for (var i = 0; i < len; i++) {
             key = keys[i];
-            if (typeof obj[key] === "object" && !Array.isArray(obj[key]) && obj[key] !== null)
-            {
-                result = {...result, ...metaValueToLinearMerge(obj[key], def[key], req[key], errs[key], sub_sep, prefix+key)};
+            if (typeof obj[key] === "object" && !Array.isArray(obj[key]) && obj[key] !== null) {
+                result = { ...result, ...metaValueToLinearMerge(obj[key], def[key], req[key], errs[key], sub_sep, prefix + key) };
             }
-            else
-            {
-                if (def[key] !== null && req[key] && !errs[key].warn_def)
-                {
+            else {
+                if (def[key] !== null && req[key] && !errs[key].warn_def) {
                     result[prefix + key] = def[key];
                     continue;
                 }
 
-                if (obj[key] !== null)
-                {
+                if (obj[key] !== null) {
                     result[prefix + key] = obj[key];
                     continue;
                 }
@@ -107,31 +93,24 @@ export const metaValueToLinearMerge = function(obj, def, req, errs, sub_sep, par
     return result;
 }
 
-export const metaValueToLinear = function(obj, def, req, errs) 
-{
+export const metaValueToLinear = function (obj, def, req, errs) {
     var result = {};
-    if (typeof obj === "object")
-    {    
+    if (typeof obj === "object") {
         var keys = Object.keys(obj);
         var len = keys.length;
         var key;
-        for (var i = 0; i < len; i++)
-        {   
+        for (var i = 0; i < len; i++) {
             key = keys[i];
-            if (typeof obj[key] === "object" && !Array.isArray(obj[key]) && obj[key] !== null)
-            {
-                result = {...result, ...metaValueToLinear(obj[key], def[key], req[key], errs[key])};
+            if (typeof obj[key] === "object" && !Array.isArray(obj[key]) && obj[key] !== null) {
+                result = { ...result, ...metaValueToLinear(obj[key], def[key], req[key], errs[key]) };
             }
-            else
-            {
-                if (def[key] !== null && req[key] && !errs[key].warn_def)
-                {
+            else {
+                if (def[key] !== null && req[key] && !errs[key].warn_def) {
                     result[key] = def[key];
                     continue;
                 }
-                
-                if (obj[key] !== null)
-                {
+
+                if (obj[key] !== null) {
                     result[key] = obj[key];
                     continue;
                 }
@@ -143,43 +122,36 @@ export const metaValueToLinear = function(obj, def, req, errs)
 }
 
 /* JSON to value */
-export const jsonToMeta_Tree = function(obj) 
-{
+export const jsonToMeta_Tree = function (obj) {
     var result = {};
     var errors = {};
     var defaultV = {};
     var req = {};
-    if (Array.isArray(obj))
-    {
+    if (Array.isArray(obj)) {
         var len = obj.length;
         var uid;
-        for (var i = 0; i < len; i++)
-        {
+        for (var i = 0; i < len; i++) {
             uid = obj[i].uid;
-            if (obj[i].sub !== undefined)
-            {
+            if (obj[i].sub !== undefined) {
                 var subresult = jsonToMeta_Tree(obj[i].sub);
                 result[uid] = subresult[0];
                 errors[uid] = subresult[1];
                 defaultV[uid] = subresult[2];
                 req[uid] = subresult[3];
             }
-            else
-            {
-                if (obj[i].value !== undefined)
-                {
-                    result[uid] = obj[i].value;                   
+            else {
+                if (obj[i].value !== undefined) {
+                    result[uid] = obj[i].value;
                     errors[uid] = aliases[obj[i].type].getErrors(obj[i].value, obj[i]);
-                    defaultV[uid] = (obj[i].default !== undefined)?obj[i].default:null;
-                    req[uid] = (obj[i].required)?true:false;
+                    defaultV[uid] = (obj[i].default !== undefined) ? obj[i].default : null;
+                    req[uid] = (obj[i].required) ? true : false;
                 }
-                else
-                {
+                else {
                     var type = obj[i].type;
-                    result[uid] = (obj[i].required)?aliases[type].value:null;
+                    result[uid] = (obj[i].required) ? aliases[type].value : null;
                     errors[uid] = aliases[type].getErrors(result[uid], obj[i]);
-                    defaultV[uid] = (obj[i].default !== undefined && obj[i].required)?obj[i].default:null;
-                    req[uid] = (obj[i].required)?true:false;
+                    defaultV[uid] = (obj[i].default !== undefined && obj[i].required) ? obj[i].default : null;
+                    req[uid] = (obj[i].required) ? true : false;
                 }
             }
         }
@@ -188,63 +160,52 @@ export const jsonToMeta_Tree = function(obj)
     return [result, errors, defaultV, req];
 }
 
-export const getMetaValue = function(obj, value)
-{
-    if (obj.type === undefined || !Object.keys(aliases).includes(obj.type))
-    {
+export const getMetaValue = function (obj, value) {
+    if (obj.type === undefined || !Object.keys(aliases).includes(obj.type)) {
         return null;
     }
 
-    if (value !== undefined && value !== null && aliases[obj.type].valid(value, obj))
-    {
+    if (value !== undefined && value !== null && aliases[obj.type].valid(value, obj)) {
         return value;
     }
 
-    if (obj.value !== undefined && obj.value !== null && aliases[obj.type].valid(obj.value, obj))
-    {
+    if (obj.value !== undefined && obj.value !== null && aliases[obj.type].valid(obj.value, obj)) {
         return obj.value;
     }
 }
 
 /* JSON and value merge */
-export const valueToMeta_Tree = function(obj, val) 
-{
+export const valueToMeta_Tree = function (obj, val) {
     var result = {};
     var errors = {};
     var defaultV = {};
     var req = {};
 
-    if (Array.isArray(obj))
-    {
+    if (Array.isArray(obj)) {
         var len = obj.length;
         var uid;
-        for (var i = 0; i < len; i++)
-        {
+        for (var i = 0; i < len; i++) {
             uid = obj[i].uid;
-            if (obj[i].sub !== undefined)
-            {
+            if (obj[i].sub !== undefined) {
                 var subresult = valueToMeta_Tree(obj[i].sub, val[uid]);
                 result[uid] = subresult[0];
                 errors[uid] = subresult[1];
                 defaultV[uid] = subresult[2];
                 req[uid] = subresult[3];
             }
-            else
-            {
-                if (val[uid] !== undefined && val[uid] !== null)
-                {
+            else {
+                if (val[uid] !== undefined && val[uid] !== null) {
                     result[uid] = val[uid];
                     errors[uid] = aliases[obj[i].type].getErrors(val[uid], obj[i]);
-                    req[uid] = (obj[i].required)?true:false;
-                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid])?obj[i].default:null;
+                    req[uid] = (obj[i].required) ? true : false;
+                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid]) ? obj[i].default : null;
                 }
-                else
-                {
+                else {
                     var type = obj[i].type;
-                    result[uid] = (obj[i].required)?aliases[type].value:null;
+                    result[uid] = (obj[i].required) ? aliases[type].value : null;
                     errors[uid] = aliases[type].getErrors(result[uid], obj[i]);
-                    req[uid] = (obj[i].required)?true:false;
-                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid])?obj[i].default:null;
+                    req[uid] = (obj[i].required) ? true : false;
+                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid]) ? obj[i].default : null;
                 }
             }
         }
@@ -253,45 +214,38 @@ export const valueToMeta_Tree = function(obj, val)
     return [result, errors, defaultV, req];
 }
 
-export const valueToMeta_LinearMerge = function(obj, val, sub_sep, parent) 
-{ 
-    var prefix = (parent === undefined)?"":parent+sub_sep;
+export const valueToMeta_LinearMerge = function (obj, val, sub_sep, parent) {
+    var prefix = (parent === undefined) ? "" : parent + sub_sep;
     var result = {};
     var errors = {};
     var defaultV = {};
     var req = {};
 
-    if (Array.isArray(obj))
-    {
+    if (Array.isArray(obj)) {
         var len = obj.length;
         var uid;
-        for (var i = 0; i < len; i++)
-        {
+        for (var i = 0; i < len; i++) {
             uid = obj[i].uid;
-            if (obj[i].sub !== undefined)
-            {
+            if (obj[i].sub !== undefined) {
                 var subresult = valueToMeta_LinearMerge(obj[i].sub, val, sub_sep, parent);
                 result[uid] = subresult[0];
                 errors[uid] = subresult[1];
                 defaultV[uid] = subresult[2];
                 req[uid] = subresult[3];
             }
-            else
-            {
-                if (val[prefix + uid] !== undefined && val[prefix + uid] !== null)
-                {
+            else {
+                if (val[prefix + uid] !== undefined && val[prefix + uid] !== null) {
                     result[uid] = val[prefix + uid];
                     errors[uid] = aliases[obj[i].type].getErrors(val[prefix + uid], obj[i]);
-                    req[uid] = (obj[i].required)?true:false;
-                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid])?obj[i].default:null;
+                    req[uid] = (obj[i].required) ? true : false;
+                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid]) ? obj[i].default : null;
                 }
-                else
-                {
+                else {
                     var type = obj[i].type;
-                    result[uid] = (obj[i].required)?aliases[type].value:null;
+                    result[uid] = (obj[i].required) ? aliases[type].value : null;
                     errors[uid] = aliases[type].getErrors(result[uid], obj[i]);
-                    req[uid] = (obj[i].required)?true:false;
-                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid])?obj[i].default:null;
+                    req[uid] = (obj[i].required) ? true : false;
+                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid]) ? obj[i].default : null;
                 }
             }
         }
@@ -300,44 +254,37 @@ export const valueToMeta_LinearMerge = function(obj, val, sub_sep, parent)
     return [result, errors, defaultV, req];
 }
 
-export const valueToMeta_Linear = function(obj, val) 
-{
+export const valueToMeta_Linear = function (obj, val) {
     var result = {};
     var errors = {};
     var defaultV = {};
     var req = {};
 
-    if (Array.isArray(obj))
-    {
+    if (Array.isArray(obj)) {
         var len = obj.length;
         var uid;
-        for (var i = 0; i < len; i++)
-        {
+        for (var i = 0; i < len; i++) {
             uid = obj[i].uid;
-            if (obj[i].sub !== undefined)
-            {
+            if (obj[i].sub !== undefined) {
                 var subresult = valueToMeta_Linear(obj[i].sub, val);
                 result[uid] = subresult[0];
                 errors[uid] = subresult[1];
                 defaultV[uid] = subresult[2];
                 req[uid] = subresult[3];
             }
-            else
-            {
-                if (val[uid] !== undefined && val[uid] !== null)
-                {
+            else {
+                if (val[uid] !== undefined && val[uid] !== null) {
                     result[uid] = val[uid];
                     errors[uid] = aliases[obj[i].type].getErrors(val[uid], obj[i]);
-                    req[uid] = (obj[i].required)?true:false;
-                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid])?obj[i].default:null;
+                    req[uid] = (obj[i].required) ? true : false;
+                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid]) ? obj[i].default : null;
                 }
-                else
-                {
+                else {
                     var type = obj[i].type;
-                    result[uid] = (obj[i].required)?aliases[type].value:null;
+                    result[uid] = (obj[i].required) ? aliases[type].value : null;
                     errors[uid] = aliases[type].getErrors(result[uid], obj[i]);
-                    req[uid] = (obj[i].required)?true:false;
-                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid])?obj[i].default:null;
+                    req[uid] = (obj[i].required) ? true : false;
+                    defaultV[uid] = (obj[i].default !== undefined && obj[i].default !== null && req[uid]) ? obj[i].default : null;
                 }
             }
         }
@@ -348,28 +295,23 @@ export const valueToMeta_Linear = function(obj, val)
 
 
 /* error check */
-export const invalidCheck = function(obj) 
-{
+export const invalidCheck = function (obj) {
     var subresult = false;
 
-    if (typeof obj === "object")
-    {
-        if (obj.invalid !== undefined && typeof obj.invalid === "boolean")
-        {
+    if (typeof obj === "object") {
+        if (obj.invalid !== undefined && typeof obj.invalid === "boolean") {
             return obj.invalid;
         }
 
         var keys = Object.keys(obj);
         var len = keys.length;
         var i;
-        for (i = 0; i < len; i++)
-        {
+        for (i = 0; i < len; i++) {
             var key = keys[i];
-            if (typeof obj[key] === "object")            {
+            if (typeof obj[key] === "object") {
                 subresult = subresult || invalidCheck(obj[key]);
             }
-            else
-            {
+            else {
                 subresult = subresult || obj[key].invalid;
             }
         }
@@ -382,34 +324,37 @@ export const metaTo = {
     tree: metaValueToTree,
     linear_merge: metaValueToLinearMerge,
     linear: metaValueToLinear
-  }
-  
+}
+
 export const toMeta = {
     tree: valueToMeta_Tree,
     linear_merge: valueToMeta_LinearMerge,
     linear: valueToMeta_Linear
-  }
+}
 
-export const isValidValueJSON = function(json, value, mode, sep)
-{
-    var serial_mode = ( mode && ["tree", "linear", "linear_merge"].includes(mode))?mode:"tree";
-    var separator = (sep)?sep:".";
+export const isValidValueJSON = function (json, value, mode, sep) {
+    try {
+        var serial_mode = (mode && ["tree", "linear", "linear_merge"].includes(mode)) ? mode : "tree";
+        var separator = (sep) ? sep : ".";
 
-    if (!isValidDesignJSON(json, serial_mode))
+        if (!isValidDesignJSON(json, serial_mode)) {
+            return false;
+        }
+
+        var meta;
+        if (value !== undefined) {
+            meta = toMeta[serial_mode](json, value, separator);
+        }
+        else {
+            meta = jsonToMeta_Tree(json);
+        }
+
+        return !invalidCheck(meta[1]);
+    }
+    catch
     {
         return false;
-    }   
-
-    var meta;
-    if (value !== undefined) {
-        meta = toMeta[serial_mode](json, value, separator);
     }
-    else
-    {
-        meta = jsonToMeta_Tree(json);
-    }
-
-    return !invalidCheck(meta[1]);
 }
 
 export {
@@ -420,11 +365,11 @@ export {
     InputCustom,
     InputFloat,
     InputInteger,
-    InputString, 
+    InputString,
     InputListCustom,
-    InputListFloat, 
-    InputListInteger, 
-    InputListString, 
+    InputListFloat,
+    InputListInteger,
+    InputListString,
     Paragraph,
     Section,
     SectionPackage

@@ -50,7 +50,7 @@ export default class Generator extends Component {
           nextState.errors = meta[1];
           nextState.defaults = meta[2];
           nextState.req = meta[3];
-          nextState.json = nextProps.json;
+          nextState.json = nextProps.json;   
         }
         else {
           meta = jsonToMeta_Tree(nextProps.json);
