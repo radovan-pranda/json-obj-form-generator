@@ -258,9 +258,9 @@ export default class Designer extends Component {
     if (this.state.fatal_error) {
       return (
         <div className={(this.props.className !== undefined)?(this.props.className):"" + " jofgen-D-fatal-error"} style={this.props.style} >
-          {this.props.fatal_error.icon}
+          {this.props.fatal_error_icon}
           <div className="jofgen-D-text-fatal-error">
-            {this.props.fatal_error.text}
+            {this.props.fatal_error_msg}
           </div>
         </div>
       )
@@ -423,6 +423,8 @@ Designer.propTypes = {
   hideDissabled: PropTypes.bool,
   jkey: PropTypes.shape(keyPropType),
   size: PropTypes.string,
+  fatal_error_msg: PropTypes.string.isRequired,
+  fatal_error_icon: PropTypes.any.isRequired,
   translation: PropTypes.shape({
     export: PropTypes.string.isRequired,
     formPreview: PropTypes.string.isRequired,
@@ -585,10 +587,8 @@ Designer.defaultProps = {
   export: false,
   size: "sm",
   json_compression: "max",
-  fatal_error: {
-    icon: fatal_error,
-    text: "Ooops... Something went wrong. Unable to render designer."
-  },
+  fatal_error_msg: "Ooops... Something went wrong. Unable to render designer.",
+  fatal_error_icon: fatal_error,
   translation: {
     export: "Export JSON",
     formPreview: "Form preview",
