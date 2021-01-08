@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://radovan-pranda.github.io/json-obj-form-generator/assets/logo-sm.png" height="150px" />
+<img src="https://radovan-pranda.github.io/json-obj-form-generator/assets/logo-v1_2.png" height="150px" />
 
   <h1 align="center">json-obj-form-generator</h1>
   <p align="center">generate forms from JSON object<p>
