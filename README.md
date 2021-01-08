@@ -1,12 +1,12 @@
-<center>
-<img src="https://radovan-pranda.github.io/json-obj-form-generator/assets/logo-sm.png" height="160px" />
+<p align="center">
+<img src="https://radovan-pranda.github.io/json-obj-form-generator/assets/logo-sm.png" height="150px" />
 
-  <h1>json-obj-form-generator</h1>
-  <p>generate forms from JSON object<p>
+  <h1 align="center">json-obj-form-generator</h1>
+  <p align="center">generate forms from JSON object<p>
 
 [![NPM](https://img.shields.io/npm/v/json-obj-form-generator.svg)](https://www.npmjs.com/package/json-obj-form-generator) 
 [![License](https://img.shields.io/npm/l/json-obj-form-generator.svg)](https://github.com/radovan-pranda/json-obj-form-generator/blob/master/LICENSE)
-</center>
+</p>
 
 
 ## Install
