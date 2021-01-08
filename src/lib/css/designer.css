@@ -26,7 +26,7 @@
 .jofgen-D-icon-m {  width: 1rem; height: 1rem; margin-top: -1px; }
 .jofgen-D-icon-side { position: absolute; top: 0; }
 
-.jofgen-D-component { display: flex; flex-wrap: wrap; flex-direction: row; min-width: 300px; margin-top: 15px; margin-bottom: 15px; }
+.jofgen-D-component { display: flex; flex-wrap: wrap; flex-direction: initial !important; min-width: 300px; margin-top: 15px; margin-bottom: 15px; }
 .jofgen-D-component > .jofgen-D-component-btns-left { flex-basis: 0; flex-grow: 1; max-width: calc(38px + 2 * 0.25rem); position: relative; width: calc(38px + 2 * 0.25rem); padding: 0.5rem 0.25rem; border-right: 1px solid rgba(0,0,0,.125); }
 .jofgen-D-component > .jofgen-D-component-body { flex-basis: 0; flex-grow: 1; max-width: calc(100% - (38px + 2 * 0.25rem)); position: relative; width: calc(100% - (38px + 2 * 0.25rem)); }
 .jofgen-D-component > .jofgen-D-component-body > .jofgen-D-card-body { padding: 1.0rem; flex: 1 1 auto; min-height: 1px; }
@@ -361,4 +361,9 @@ input[type=week].form-control:invalid:focus {
 
 h5 {
     text-align: left;
+}
+
+.jofgen-D-component-body > .row
+{
+    padding: 15px;
 }

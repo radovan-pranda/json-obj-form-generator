@@ -197,30 +197,30 @@ ListNumeric.propTypes = {
   minNo: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["maxNo"] !== undefined && props["maxNo"] < props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than maxNo.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than maxNo.`);
       }
     }
   },
   maxNo: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["minNo"] !== undefined && props["minNo"] > props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than minNo.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than minNo.`);
       }
     }
   },
@@ -369,15 +369,15 @@ export const prototype = function () {
   };
 }
 
-export const rebuild = function (e, props) {
+export const rebuild = function (e, props, typeValid, typeFilter) {
   return validGetArrays({
     new_value: "",
     new_min: true,
     new_max: true,
     new_type: true,
-    values: e,
+    values: (e && Array.isArray(e))?e:[],
     emin: [],
     emax: [],
     etype: []
-  }, props);
+  }, props, typeValid, typeFilter);
 }

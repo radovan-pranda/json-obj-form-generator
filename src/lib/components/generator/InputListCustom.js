@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Col, FormGroup, Input, Button, FormFeedback, FormText, Label, Popover, PopoverBody } from 'reactstrap';
+import { Col, FormGroup, Input, Button, FormFeedback, FormText } from 'reactstrap';
 import { info as infoIcon, plus as addIcon, trashCan as dropIcon } from './icons';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { intValid, filterInt } from './validators';
@@ -58,10 +58,11 @@ export class InputListCustom extends Component {
     err.ergx.push(test);
     err.invalidArr.push(!test);
 
-    err.err_minNo = (this.props.minNo !== undefined && intValid(this.props.minNo) && filterInt(this.props.minNo) > val.length);
-    err.err_maxNo = (this.props.maxNo !== undefined && intValid(this.props.maxNo) && filterInt(this.props.maxNo) < val.length);
+    err.err_minNo = (intValid(this.props.minNo) && filterInt(this.props.minNo) > val.length);
+    err.err_maxNo = (intValid(this.props.maxNo) && filterInt(this.props.maxNo) < val.length);
     err.invalid = err.err_minNo || err.err_maxNo || err.invalidArr.includes(true);
-
+    err.err_req = (this.props.required && val.length === 0 && err.err_minNo);
+    err.warn_def = true;
     err.new_rgx = false;
     err.new_invalid = false;
     err.new_value = "";
@@ -99,7 +100,7 @@ export class InputListCustom extends Component {
       err.err_req = (this.props.required && val.length === 0 && err_minNo);
 
       for (var i = 0; i < this.props.default.length; i++) {
-        sinvalid.push(valid(this.props.default[i], this.props)[3]);
+        sinvalid.push(!valid(this.props.default[i], this.props)[3]);
       }
 
       err.invalid = err_minNo || err_maxNo || sinvalid.includes(true);
@@ -181,11 +182,10 @@ export class InputListCustom extends Component {
 
     }
 
-
     return (
       <div className="jofgen-card-lst">
         <Clearer {...this.props} clear={this.Clear}>
-          <div class={"jofgen-list-body" + ((!this.props.required) ? "-mr" : "")} >
+          <div className={"jofgen-list-body" + ((!this.props.required) ? "-mr" : "")} >
             {new_element}
             {
               (!this.props.errors.warn_def && this.props.required)
@@ -198,7 +198,7 @@ export class InputListCustom extends Component {
             {(this.props.errors.err_maxNo) ? <FormText color="danger">{this.props.err_maxNo}</FormText> : null}
             <TransitionGroup>
               {
-                (this.props.value !== null) ? (
+                (this.props.value !== null && Array.isArray(this.props.value)) ? (
                   this.props.value.map((item, idx) => {
 
                     return (
@@ -272,37 +272,37 @@ InputListCustom.propTypes = {
       }
       catch
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Invalid regular expression');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Invalid regular expression.`);
       }
     }
   },
   minNo: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["maxNo"] !== undefined && props["maxNo"] < props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than maxNo.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than maxNo.`);
       }
     }
   },
   maxNo: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["minNo"] !== undefined && props["minNo"] > props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than minNo.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than minNo.`);
       }
     }
   },
@@ -365,7 +365,8 @@ InputListCustom.defaultProps = {
 export const getErrors = function (e, props) {
 
   var new_value = getValue(e, props);
-
+  var i;
+  
   if (new_value !== undefined && new_value !== null) {
     var warn_def = !(e.length === 0 && props.default !== undefined && props.required);
 
@@ -374,7 +375,7 @@ export const getErrors = function (e, props) {
       var err_minNo = (props.minNo !== undefined && intValid(props.minNo) && filterInt(props.minNo) > props.default.length);
       var err_maxNo = (props.maxNo !== undefined && intValid(props.maxNo) && filterInt(props.maxNo) < props.default.length);
 
-      for (var i = 0; i < props.default.length; i++) {
+      for (i = 0; i < props.default.length; i++) {
         sinvalid.push(valid(props.default[i], props));
       }
 
@@ -398,7 +399,7 @@ export const getErrors = function (e, props) {
       var err_minNoV = (props.minNo !== undefined && intValid(props.minNo) && filterInt(props.minNo) > e.length);
       var err_maxNoV = (props.maxNo !== undefined && intValid(props.maxNo) && filterInt(props.maxNo) < e.length);
       var validate;
-      for (var i = 0; i < e.length; i++) {
+      for (i = 0; i < e.length; i++) {
         validate = valid(e[i], props);
         ergx.push(validate);
         invalid.push(!validate);

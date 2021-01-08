@@ -292,11 +292,8 @@ export const CustomTranslationPropType = {
 export const ParagraphTranslationPropType =
 {
     name: PropTypes.string.isRequired,
-    columns: PropTypes.string.isRequired,
-    smallWidthAlert: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
-    width: PropTypes.string.isRequired,
     messages: PropTypes.shape({
         empty: PropTypes.string.isRequired
     }).isRequired
@@ -563,6 +560,7 @@ export const Default_CustomTranslation = {
     required: "Mandatory",
     value: "Value",
     default: "Default value",
+    is_password: "Is password",
     regex: "Validation expresion",
     placeholder: "Placeholder",
     tip: "Tip",
@@ -655,6 +653,7 @@ export const Default_ListStringTranslation = {
     required: "Mandatory",
     value: "Value",
     default: "Default value",
+    is_password: "Is password",
     minLength: "Min. input length",
     maxLength: "Max. input length",
     minNo: "Min. number of input values",
@@ -752,11 +751,8 @@ export const Default_PackTranslation =
 export const Default_ParagraphTranslation =
 {
     name: "Title",
-    columns: "columns",
-    smallWidthAlert: "Text may be unreadable for users with lower screen resolution",
     title: "Paragraph",
     text: "Text",
-    width: "Width",
     messages: {
         empty: "Title or text must be filled."
     }
@@ -1147,6 +1143,7 @@ export const Default_ListCustomTranslation = {
     required: "Mandatory",
     value: "Value",
     default: "Default value",
+    is_password: "Is password",
     regex: "Regular expression",
     minLength: "Min. input length",
     maxLength: "Max. input length",

@@ -1,6 +1,6 @@
 {
   "name": "json-obj-form-generator",
-  "version": "1.1.10r",
+  "version": "1.2.2",
   "private": false,
   "babel": {
     "presets": [
@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/radovan-pranda/json-obj-form-generator/issues"
   },
-  "homepage": "https://github.com/radovan-pranda/json-obj-form-generator",
+  "homepage": "https://radovan-pranda.github.io/json-obj-form-generator/",
   "files": [
     "dist",
     "README.md"

@@ -7,7 +7,9 @@ export class Paragraph extends Component {
     return (
       <Fragment>
         {(this.props.title !== undefined) ? <CardTitle><b>{this.props.title}</b></CardTitle> : null}
-        {this.props.text}
+        <div>
+          {this.props.text}
+        </div>
       </Fragment>);
   }
 }

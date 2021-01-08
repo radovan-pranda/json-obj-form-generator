@@ -1,0 +1,24 @@
+
+.card {
+    position: relative !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-direction: column !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    word-wrap: break-word !important;
+    background-color: #fff !important;
+    background-clip: border-box !important;
+    border: 0.0625rem solid rgba(231, 234, 243, 0.7) !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 6px 12px rgba(140, 152, 164, 0.075) !important;
+  }
+
+  .jofgen-D-ext--btns-container {
+    width: 200px !important;
+  }
+  
+  .jofgen-D-component {
+    flex-direction: initial !important;
+  }
+  

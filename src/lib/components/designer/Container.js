@@ -63,7 +63,6 @@ export default class Container extends Component {
               {downBtn}
               {viewBtn}
               {dropBtn}
-
             </ButtonGroup>
           </div>
           <div className="jofgen-D-component-body">

@@ -5,5 +5,5 @@ import { isValidValueJSON } from './components/generator';
 
 export { Generator as JOFGENGenerator };
 export { Designer as JOFGENDesigner };
-export { isValidDesignJSON as isValidDesignJSON };
-export { isValidValueJSON as isValidValueJSON };
+export { isValidDesignJSON };
+export { isValidValueJSON };

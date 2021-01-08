@@ -257,7 +257,7 @@ export default class Designer extends Component {
     var exportBtn;
     if (this.state.fatal_error) {
       return (
-        <div className={(this.props.className !== undefined)?(this.props.className):"" + " jofgen-D-fatal-error"} style={this.props.style} >
+        <div className={`${(this.props.className !== undefined)?(this.props.className):""} jofgen-D-fatal-error`} style={this.props.style} >
           {this.props.fatal_error_icon}
           <div className="jofgen-D-text-fatal-error">
             {this.props.fatal_error_msg}
@@ -367,9 +367,11 @@ export default class Designer extends Component {
                     onUpButtonClick={(idx > 0) ? (() => this.changePosition(idx, -1)) : undefined}
                     onDownButtonClick={(idx < no_of_elements) ? (() => this.changePosition(idx, 1)) : undefined}
                     onRemoveButtonClick={() => this.removeChildren(idx)}
-                    hideDissabled={false}
+                    hideDissabled={this.props.hideDissabled}
+                    translations={this.props.translation}
                     extras={this.state.sub_items[idx]}
                     size={this.props.size}
+                    sm={(item.sm)?item.sm:12}
                     icons={this.props.icons.container}
                     extended={this.props.extended} >
                     <Tag
@@ -387,6 +389,7 @@ export default class Designer extends Component {
                       icons_set={this.props.icons}
                       icons={this.props.icons.types[item.type]}
                       sm={this.props.sm}
+                      hideDissabled={this.props.hideDissabled}
                       onChange={(value, valid) => { this.onChange(value, valid, idx) }}
                       onChangeSub={(value, valid, uids, subs) => { this.onChangeSub(value, valid, uids, subs, idx) }}
                       translation={this.props.translation.types[item.type]}
@@ -433,7 +436,10 @@ Designer.propTypes = {
     copy_fail: PropTypes.string.isRequired,
     copyToClipboard: PropTypes.string.isRequired,    
     add: PropTypes.string.isRequired,  
-    addComponent: PropTypes.string.isRequired,  
+    addComponent: PropTypes.string.isRequired,
+    width: PropTypes.string.isRequired,
+    smallWidthAlert: PropTypes.string.isRequired,
+    columns: PropTypes.string.isRequired,
     types: PropTypes.exact({
       // primitives     
       bool: PropTypes.shape(BoolTranslationPropType),
@@ -583,7 +589,7 @@ Designer.defaultProps = {
   extended: true,
   jkey: Default_DkeyPropType,
   mode: "tree",
-  hideDissabled: true,
+  hideDissabled: false,
   export: false,
   size: "sm",
   json_compression: "max",
@@ -598,6 +604,9 @@ Designer.defaultProps = {
     copy_fail: "Oops .. Something went wrong. Copying to clipboard failed",    
     add: "Add",
     addComponent: "Add component",
+    width: "Width",
+    columns: "columns",
+    smallWidthAlert: "Text may be unreadable for users with lower screen resolution",
     types: {
       bool: Default_BoolTranslation,
       color: Default_ColorTranslation,
@@ -622,6 +631,7 @@ Designer.defaultProps = {
     designer: designer,
     preview: preview,
     copy_failed: copy_failed,
+    alert: alertIcon,
     container: {
       view: view,
       unview: unview,

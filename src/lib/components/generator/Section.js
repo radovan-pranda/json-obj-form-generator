@@ -54,21 +54,44 @@ export class Section extends Component {
                                         if (gen.useContainer) {
                                             return (
                                                 <Fragment key={sub_idx}>
-                                                    <Container {...sub_item} >
+                                                    <Container {...sub_item} req_indicator={this.props.req_indicator} >
                                                         <Tag {...sub_item}
                                                             mode={this.props.mode}
                                                             errors={this.props.errors[sub_item.uid]}
                                                             value={this.props.value[sub_item.uid]}
+                                                            req_indicator={this.props.req_indicator}
                                                             className={this.props.className}
                                                             size={this.props.size}
                                                             jkey={this.props.jkey}
                                                             invalid={false}
                                                             sm={this.props.sm}
-                                                            onChange={(id, val) => { this.onSubChange(id, val) }}
+                                                            onChange={this.onSubChange}
                                                             isValid={() => { }}
+                                                            invalidCheck={this.props.invalidCheck}
                                                             generator_aliases={this.props.generator_aliases}
                                                         />
                                                     </Container>
+                                                </Fragment>
+                                            );
+                                        }
+                                        else {
+                                            return (
+                                                <Fragment key={sub_idx}>
+                                                    <Tag {...sub_item}
+                                                        mode={this.props.mode}
+                                                        errors={this.props.errors[sub_item.uid]}
+                                                        value={this.props.value[sub_item.uid]}
+                                                        className={this.props.className}
+                                                        req_indicator={this.props.req_indicator}
+                                                        size={this.props.size}
+                                                        jkey={this.props.jkey}
+                                                        invalid={false}
+                                                        sm={this.props.sm}
+                                                        onChange={this.onSubChange}
+                                                        isValid={() => { }}
+                                                        invalidCheck={this.props.invalidCheck}
+                                                        generator_aliases={this.props.generator_aliases}
+                                                    />
                                                 </Fragment>
                                             );
                                         }

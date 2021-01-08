@@ -114,7 +114,7 @@ export const generator_aliases = {
   rgx: { tag: Generator_InputCustom, useContainer: true },
   float: { tag: Generator_InputFloat, useContainer: true },
   int: { tag: Generator_InputInteger, useContainer: true },
-  p: { tag: Generator_Paragraph, useContainer: true },
+  p: { tag: Generator_Paragraph, useContainer: false },
   str: { tag: Generator_InputString, useContainer: true },
 
   // input lists
@@ -229,7 +229,9 @@ export const designer_aliases = {
     rebuild: int_il_rebuild,
     mustHaveUid: true,
     defaultValid: () => { return false; },
-    defaultUid: () => { return ''; }
+    defaultUid: () => { return ''; },
+
+    
   },
   rgx_il: {
     value: [],

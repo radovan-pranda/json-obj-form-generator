@@ -49,7 +49,7 @@ export class Paragraph extends Component {
   render() {
     var invalid = !valid(this.props.value);
 
-    return (<div className={this.props.className + " " + " jofgen-D-card jofgen-D-p" + ((invalid) ? " invalid" : "")} style={this.props.style} >
+    return (<div className={`${this.props.className}  jofgen-D-card jofgen-D-p ${((invalid) ? " invalid" : "")}`} style={this.props.style} >
       <CardBody className="jofgen-D-card-body">
         <CardTitle>
           {(invalid) ? this.props.icons.invalid_icon : this.props.icons.icon}
@@ -75,18 +75,18 @@ export class Paragraph extends Component {
             <FormGroup row className="jofgen-D-form-group">
               <Col sm={2} className="jofgen-D-inputLabel jofgen-D-inputLabelWithpopUp" >
                 <Label className="jofgen-D-col-form-label-sm" size={this.props.size} >
-                  {this.props.translation.width}
+                  {this.props.translations.width}
                 </Label>
                 {
-                  (this.state.warningShow === true)
+                  (["1","2","3","4","5"].includes(this.props.value.sm))
                     ? (
                       <Fragment>
                         <span id={this.state.gId + "popup"} style={{ float: "right" }} onMouseOver={() => { this.setState({ alertShow: true }) }} onMouseOut={() => { this.setState({ alertShow: false }) }} >
-                          {this.props.icons.alert}
+                          {this.props.icons_set.alert}
                         </span>
                         <Popover target={this.state.gId + "popup"} isOpen={this.state.alertShow}>
                           <PopoverBody>
-                            {this.props.translation.smallWidthAlert}
+                            {this.props.translations.smallWidthAlert}
                           </PopoverBody>
                         </Popover>
                       </Fragment>
@@ -102,25 +102,25 @@ export class Paragraph extends Component {
                   id={this.state.gId + "dropdown"}
                   bsSize={this.props.size}
                 >
-                  <option value="1">1 (12 {this.props.translation.columns})</option>
-                  <option value="2">2 (6 {this.props.translation.columns})</option>
-                  <option value="3">3 (4 {this.props.translation.columns})</option>
-                  <option value="4">4 (3 {this.props.translation.columns})</option>
-                  <option value="5">5</option>
-                  <option value="6">6 (2 {this.props.translation.columns})</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12 (1 {this.props.translation.columns})</option>
+                  <option value={1}>1 (12 {this.props.translations.columns})</option>
+                  <option value={2}>2 (6 {this.props.translations.columns})</option>
+                  <option value={3}>3 (4 {this.props.translations.columns})</option>
+                  <option value={4}>4 (3 {this.props.translations.columns})</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6 (2 {this.props.translations.columns})</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                  <option value={10}>10</option>
+                  <option value={11}>11</option>
+                  <option value={12}>12 (1 {this.props.translations.columns})</option>
                 </CustomInput>
               </Col>
             </FormGroup>
           </Col>
         </Row>
         <FormGroup row className="jofgen-D-form-group">
-          <Label size={this.props.size} className="jofgen-D-inputLabel" sm={1}>{this.props.translation.text}</Label>
+          <Label size={this.props.size} className="jofgen-D-inputLabel" sm={2}>{this.props.translation.text}</Label>
           <Col className="jofgen-D-input-col" >
             <Input
               name="text"
@@ -141,7 +141,7 @@ Paragraph.propTypes = {
   value: PropTypes.shape({
     title: PropTypes.string,
     text: PropTypes.string,
-    sm: PropTypes.string
+    sm: PropTypes.oneOf(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
   }).isRequired,
 
   /* functions */
@@ -187,8 +187,8 @@ export const clean = function (e) {
   return Object.assign({},
     ((e.title) ? { title: e.title } : null),
     ((e.text) ? { text: e.text } : null),
-    ((e.sm) ? { sm: e.sm } : null),
-    { type: "p" }
+    { type: "p" },
+    (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"].includes(e.sm)) ? { sm: e.sm } : null
   );
 }
 
@@ -200,8 +200,8 @@ export const prototype = function () {
   return {
     title: "",
     text: "",
-    sm: "12",
-    type: "p"
+    type: "p",
+    sm: "12"
   }
 }
 
@@ -209,7 +209,7 @@ export const rebuild = function (e) {
   return {
     title: (e.title !== undefined && e.title !== null) ? String(e.title) : "",
     text: (e.text !== undefined && e.text !== null) ? String(e.text) : "",
-    sm: (e.sm !== undefined && e.sm !== null) ? String(e.sm) : "12",
-    type: "p"
+    type: "p",
+    sm: (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(e.sm)) ? String(e.sm) : "12"
   }
 }

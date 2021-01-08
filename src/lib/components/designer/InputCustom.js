@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Col, FormGroup, Label, CardTitle, CardBody, Button, Collapse, FormFeedback, FormText } from 'reactstrap';
+import { Popover, PopoverBody, CustomInput, Input, Col, FormGroup, Label, CardTitle, CardBody, Button, Collapse, FormFeedback, FormText } from 'reactstrap';
 import { Default_CustomTranslation, CustomTranslationPropType, Default_keyPropType, keyPropType } from './propTypes';
 import { idGenerator } from './utils';
 import { custom as icon, invalid_custom as invalid_icon, warnings as warningsIcon, warningAlert as warningsAlertIcon, error as errorsIcon, errorAlert as errorsAlertIcon } from './icons';
@@ -91,13 +91,12 @@ export class InputCustom extends Component {
 
   render() {
     var invalid = !valid(this.props.value);
-    var rgx;
     var renderErrDefault = (this.props.value.default.length > 0) ? this.renderErrors(this.props.value.default, this.props.value.regex, "d") : [];
     var renderErrValue = (this.props.value.value.length > 0) ? this.renderErrors(this.props.value.value, this.props.value.regex, "v") : [];
     var renderErrRegex = [];
 
     try {
-      rgx = new RegExp(this.props.value.regex);
+      var rgx = new RegExp(this.props.value.regex);
     }
     catch
     {
@@ -157,19 +156,73 @@ export class InputCustom extends Component {
                   bsSize={this.props.size}
                 />
                 <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
+                <FormGroup check>
+                  <Label size={this.props.size} check>
+                    <Input
+                      name="required"
+                      type="checkbox"
+                      checked={this.props.value.required} onChange={this.onChangeBool}
+                    />
+                    {" " + this.props.translation.required}
+                  </Label>
+                  <br />
+                  <Label size={this.props.size} check>
+                    <Input
+                      name="is_password"
+                      type="checkbox"
+                      checked={this.props.value.is_password} onChange={this.onChangeBool}
+                    />
+                    {" " + this.props.translation.is_password}
+                  </Label>
+                </FormGroup>
               </Col>
             </FormGroup>
           </Col>
-          <Col sm={6}>
-            <FormGroup check>
-              <Label size={this.props.size} check>
-                <Input
-                  name="required"
-                  type="checkbox"
-                  checked={this.props.value.required} onChange={this.onChangeBool}
-                />
-                {" " + this.props.translation.required}
-              </Label>
+          <Col sm="6">
+            <FormGroup row className="jofgen-D-form-group">
+              <Col sm={2} className="jofgen-D-inputLabel jofgen-D-inputLabelWithpopUp" >
+                <Label className="jofgen-D-col-form-label-sm" size={this.props.size} >
+                  {this.props.translations.width}
+                </Label>
+                {
+                  (["1","2","3","4","5"].includes(this.props.value.sm))
+                    ? (
+                      <Fragment>
+                        <span id={this.state.gId + "popup"} style={{ float: "right" }} onMouseOver={() => { this.setState({ alertShow: true }) }} onMouseOut={() => { this.setState({ alertShow: false }) }} >
+                          {this.props.icons_set.alert}
+                        </span>
+                        <Popover target={this.state.gId + "popup"} isOpen={this.state.alertShow}>
+                          <PopoverBody>
+                            {this.props.translations.smallWidthAlert}
+                          </PopoverBody>
+                        </Popover>
+                      </Fragment>
+                    )
+                    : null
+                }
+              </Col>
+              <Col className="jofgen-D-input-col">
+                <CustomInput
+                  name="sm"
+                  type="select"
+                  value={this.props.value.sm} onChange={this.onChange}
+                  id={this.state.gId + "dropdown"}
+                  bsSize={this.props.size}
+                >
+                  <option value={1}>1 (12 {this.props.translations.columns})</option>
+                  <option value={2}>2 (6 {this.props.translations.columns})</option>
+                  <option value={3}>3 (4 {this.props.translations.columns})</option>
+                  <option value={4}>4 (3 {this.props.translations.columns})</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6 (2 {this.props.translations.columns})</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                  <option value={10}>10</option>
+                  <option value={11}>11</option>
+                  <option value={12}>12 (1 {this.props.translations.columns})</option>
+                </CustomInput>
+              </Col>
             </FormGroup>
           </Col>
           <Col sm={6}>
@@ -298,17 +351,18 @@ InputCustom.propTypes = {
     uid: PropTypes.string,
     name: PropTypes.string,
     required: PropTypes.bool,
+    is_password: PropTypes.bool,
     value: function (props, propName, componentName) {
       if (props[propName] !== undefined && props["regex"] !== undefined) {
         try {
           var rgx = new RegExp(props[propName]);
           if (!rgx.test(props[propName])) {
-            return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '` - invalid value type.');
+            return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\` - invalid value type.`);
           }
         }
         catch
         {
-          return new Error('Invalid prop `regex` - unable to validate value of prop `' + propName + '` supplied to' + ' `' + componentName + '`.');
+          return new Error(`Invalid prop \`regex\` - unable to validate value of prop \`${propName}\` supplied to \`${componentName}\`.`);
         }
       }
     },
@@ -317,12 +371,12 @@ InputCustom.propTypes = {
         try {
           var rgx = new RegExp(props[propName]);
           if (!rgx.test(props[propName])) {
-            return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '` - invalid value type.');
+            return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\` - invalid value type.`);
           }
         }
         catch
         {
-          return new Error('Invalid prop `regex` - unable to validate value of prop `' + propName + '` supplied to' + ' `' + componentName + '`.');
+          return new Error(`Invalid prop \`regex\` - unable to validate value of prop \`${propName}\` supplied to \`${componentName}\`.`);
         }
       }
     },
@@ -333,7 +387,7 @@ InputCustom.propTypes = {
         }
         catch
         {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Invalid regular expression');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Invalid regular expression.`);
         }
       }
     },
@@ -341,7 +395,8 @@ InputCustom.propTypes = {
     err_type: PropTypes.string,
     warn_def: PropTypes.string,
     placeholder: PropTypes.string,
-    tip: PropTypes.string
+    tip: PropTypes.string,
+    sm: PropTypes.oneOf(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
   }),
 
   translation: PropTypes.shape(CustomTranslationPropType),
@@ -401,7 +456,8 @@ export const clean = function (e) {
   return Object.assign({},
     { uid: e.uid },
     (e.name.length > 0) ? { name: e.name } : null,
-    { required: e.required },
+    (e.required) ? { required: e.required } : null,
+    (e.is_password) ? { is_password: e.is_password } : null,
     (e.value.length > 0 && rgxV) ? { value: e.value } : null,
     (defValid && rgxD && e.required) ? { default: e.default } : null,
     (rgx) ? { regex: e.regex } : null,
@@ -410,7 +466,8 @@ export const clean = function (e) {
     (e.warn_def.length > 0 && defValid && rgxD && e.required) ? { warn_def: e.warn_def } : null,
     (e.placeholder.length > 0) ? { placeholder: e.placeholder } : null,
     (e.tip.length > 0) ? { tip: e.tip } : null,
-    { type: "rgx" }
+    { type: "rgx" },
+    (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"].includes(e.sm)) ? { sm: e.sm } : null
   )
 }
 
@@ -437,6 +494,7 @@ export const prototype = function () {
     uid: "",
     name: "",
     required: false,
+    is_password: false,
     value: "",
     default: "",
     regex: "",
@@ -445,7 +503,8 @@ export const prototype = function () {
     warn_def: "",
     placeholder: "",
     tip: "",
-    type: "rgx"
+    type: "rgx",
+    sm: "12"
   }
 }
 
@@ -454,6 +513,7 @@ export const rebuild = function (e) {
     uid: (e.uid !== undefined && e.uid !== null) ? String(e.uid) : "",
     name: (e.name !== undefined && e.name !== null) ? String(e.name) : "",
     required: (e.required !== undefined && e.required !== null) ? Boolean(e.required) : false,
+    is_password: (e.is_password !== undefined && e.is_password !== null) ? Boolean(e.is_password) : false,
     value: (e.value !== undefined && e.value !== null) ? String(e.value) : "",
     default: (e.default !== undefined && e.default !== null) ? String(e.default) : "",
     regex: (e.regex !== undefined && e.regex !== null) ? String(e.regex) : "",
@@ -462,6 +522,7 @@ export const rebuild = function (e) {
     warn_def: (e.warn_def !== undefined && e.warn_def !== null) ? String(e.warn_def) : "",
     placeholder: (e.placeholder !== undefined && e.placeholder !== null) ? String(e.placeholder) : "",
     tip: (e.tip !== undefined && e.tip !== null) ? String(e.tip) : "",
-    type: "rgx"
+    type: "rgx",
+    sm: (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(e.sm)) ? String(e.sm) : "12"
   }
 }

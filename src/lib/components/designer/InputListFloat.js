@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CardTitle, Col, FormGroup, CardBody, Input, Label, Button, Collapse, FormFeedback } from 'reactstrap';
+import { Popover, PopoverBody, CustomInput, CardTitle, Col, FormGroup, CardBody, Input, Label, Button, Collapse, FormFeedback } from 'reactstrap';
 import { ListFloatTranslationPropType as translationProp, Default_ListFloatTranslation as default_translationProp, Default_keyPropType, keyPropType } from './propTypes';
 import { idGenerator } from './utils';
 import { filterInt, intValid, filterFloat, floatValid } from './validators';
@@ -190,19 +190,64 @@ export class InputListFloat extends Component {
                   bsSize={this.props.size}
                 />
                 <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
+                <FormGroup check>
+                  <Label size={this.props.size} check>
+                    <Input
+                      name="required"
+                      type="checkbox"
+                      checked={this.props.value.required} onChange={this.onChangeBool}
+                    />
+                    {" " + this.props.translation.required}
+                  </Label>
+                </FormGroup>
               </Col>
             </FormGroup>
           </Col>
-          <Col sm={6}>
-            <FormGroup check>
-              <Label size={this.props.size} check>
-                <Input
-                  name="required"
-                  type="checkbox"
-                  checked={this.props.value.required} onChange={this.onChangeBool}
-                />
-                {" " + this.props.translation.required}
-              </Label>
+          <Col sm="6">
+            <FormGroup row className="jofgen-D-form-group">
+              <Col sm={2} className="jofgen-D-inputLabel jofgen-D-inputLabelWithpopUp" >
+                <Label className="jofgen-D-col-form-label-sm" size={this.props.size} >
+                  {this.props.translations.width}
+                </Label>
+                {
+                  (["1","2","3","4","5"].includes(this.props.value.sm))
+                    ? (
+                      <Fragment>
+                        <span id={this.state.gId + "popup"} style={{ float: "right" }} onMouseOver={() => { this.setState({ alertShow: true }) }} onMouseOut={() => { this.setState({ alertShow: false }) }} >
+                          {this.props.icons_set.alert}
+                        </span>
+                        <Popover target={this.state.gId + "popup"} isOpen={this.state.alertShow}>
+                          <PopoverBody>
+                            {this.props.translations.smallWidthAlert}
+                          </PopoverBody>
+                        </Popover>
+                      </Fragment>
+                    )
+                    : null
+                }
+              </Col>
+              <Col className="jofgen-D-input-col">
+                <CustomInput
+                  name="sm"
+                  type="select"
+                  value={this.props.value.sm} onChange={this.onChange}
+                  id={this.state.gId + "dropdown"}
+                  bsSize={this.props.size}
+                >
+                  <option value={1}>1 (12 {this.props.translations.columns})</option>
+                  <option value={2}>2 (6 {this.props.translations.columns})</option>
+                  <option value={3}>3 (4 {this.props.translations.columns})</option>
+                  <option value={4}>4 (3 {this.props.translations.columns})</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6 (2 {this.props.translations.columns})</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                  <option value={10}>10</option>
+                  <option value={11}>11</option>
+                  <option value={12}>12 (1 {this.props.translations.columns})</option>
+                </CustomInput>
+              </Col>
             </FormGroup>
           </Col>
           <Col sm={6}>
@@ -421,60 +466,60 @@ InputListFloat.propTypes = {
     min: function (props, propName, componentName) {
       if (props[propName] !== undefined) {
         if (!floatValid(String(props[propName]))) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be float.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be float.`);
         }
 
         if (props[propName] < 0) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
         }
 
         if (props["max"] !== undefined && props["max"] < props[propName]) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than max.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than max.`);
         }
       }
     },
     max: function (props, propName, componentName) {
       if (props[propName] !== undefined) {
         if (!floatValid(String(props[propName]))) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be float.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be float.`);
         }
 
         if (props[propName] < 0) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
         }
 
         if (props["min"] !== undefined && props["min"] > props[propName]) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than min.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than min.`);
         }
       }
     },
     minNo: function (props, propName, componentName) {
       if (props[propName] !== undefined) {
         if (!intValid(String(props[propName]))) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
         }
 
         if (props[propName] < 0) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
         }
 
         if (props["maxNo"] !== undefined && props["maxNo"] < props[propName]) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than maxNo.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than maxNo.`);
         }
       }
     },
     maxNo: function (props, propName, componentName) {
       if (props[propName] !== undefined) {
         if (!intValid(String(props[propName]))) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
         }
 
         if (props[propName] < 0) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
         }
 
         if (props["minNo"] !== undefined && props["minNo"] > props[propName]) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than minNo.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than minNo.`);
         }
       }
     },
@@ -487,7 +532,8 @@ InputListFloat.propTypes = {
     warn_def: PropTypes.string,
 
     placeholder: PropTypes.string,
-    tip: PropTypes.string
+    tip: PropTypes.string,
+    sm: PropTypes.oneOf(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
   }),
 
   translation: PropTypes.shape(translationProp),
@@ -535,8 +581,8 @@ export const valid = function (e) {
   var fmax = filterInt(e.maxNo);
   var fminL = filterFloat(e.min);
   var fmaxL = filterFloat(e.max);
-  var vdl = e.default.length;
-  var vvl = e.value.length;
+  var vdl = e.default.values.length;
+  var vvl = e.value.values.length;
 
   var vml = floatValid(e.min);
   var vmxl = floatValid(e.max);
@@ -566,21 +612,21 @@ export const clean = function (e) {
 
   var defLen = e.default.values.length > 0;
   var valLen = e.value.values.length > 0;
+  var minValid = intValid(e.minNo) && (maxNo >= minNo || isNaN(maxNo)) && minNo >= 0;
+  var maxValid = intValid(e.maxNo) && (maxNo >= minNo || isNaN(minNo)) && maxNo >= 0;
 
   var defValid = (defLen && ((maxNo >= e.default.values.length && maxValid) || (!maxValid && defLen)) && ((minNo <= e.default.values.length && minValid) || (!minValid && defLen)) && validDefault);
   var valValid = (valLen && ((maxNo >= e.value.values.length && maxValid) || (!maxValid && valLen)) && ((minNo <= e.value.values.length && minValid) || (!minValid && valLen)) && validValue);
 
-
   var minLValid = floatValid(e.min) && (maxL >= minL || isNaN(maxL));
   var maxLValid = floatValid(e.max) && (maxL >= minL || isNaN(minL));
-  var minValid = intValid(e.minNo) && (maxNo >= minNo || isNaN(maxNo)) && minNo >= 0;
-  var maxValid = intValid(e.maxNo) && (maxNo >= minNo || isNaN(minNo)) && maxNo >= 0;
+  
   return Object.assign({},
     { uid: e.uid },
     (e.name.length > 0) ? { name: e.name } : null,
     (e.required) ? { required: e.required } : null,
-    (valValid) ? { value: e.value } : null,
-    (defValid && e.required) ? { default: e.default } : null,
+    (valValid) ? { value: e.value.values } : null,
+    (defValid && e.required) ? { default: e.default.values } : null,
     (minLValid) ? { min: minL } : null,
     (maxLValid) ? { max: maxL } : null,
     (minValid) ? { minNo: minNo } : null,
@@ -594,7 +640,8 @@ export const clean = function (e) {
     (e.placeholder.length > 0) ? { placeholder: e.placeholder } : null,
     (e.tip.length > 0) ? { tip: e.tip } : null,
     (e.empty.length > 0) ? { empty: e.empty } : null,
-    { type: "float_il" }
+    { type: "float_il" },
+    (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"].includes(e.sm)) ? { sm: e.sm } : null
   )
 }
 
@@ -618,7 +665,8 @@ export const prototype = function () {
     empty: "",
     placeholder: "",
     tip: "",
-    type: "float_il"
+    type: "float_il",
+    sm: "12"
   }
 }
 
@@ -627,8 +675,8 @@ export const rebuild = function (e) {
     uid: (e.uid !== undefined && e.uid !== null) ? String(e.uid) : "",
     name: (e.name !== undefined && e.name !== null) ? String(e.name) : "",
     required: (e.required !== undefined && e.required !== null) ? Boolean(e.required) : false,
-    value: (e.value !== undefined && e.value !== null) ? list_rebuild(e.value, e) : ListNumeric_prototype(),
-    default: (e.default !== undefined && e.default !== null) ? list_rebuild(e.default, e) : ListNumeric_prototype(),
+    value: (e.value !== undefined && e.value !== null) ? list_rebuild(e.value, e, floatValid, filterFloat) : ListNumeric_prototype(),
+    default: (e.default !== undefined && e.default !== null) ? list_rebuild(e.default, e, floatValid, filterFloat) : ListNumeric_prototype(),
     min: (e.min !== undefined && e.min !== null) ? e.min : "",
     max: (e.max !== undefined && e.max !== null) ? e.max : "",
     minNo: (e.minNo !== undefined && e.minNo !== null) ? e.minNo : "",
@@ -642,6 +690,7 @@ export const rebuild = function (e) {
     placeholder: (e.placeholder !== undefined && e.placeholder !== null) ? String(e.placeholder) : "",
     tip: (e.tip !== undefined && e.tip !== null) ? String(e.tip) : "",
     empty: (e.empty !== undefined && e.empty !== null) ? String(e.empty) : "",
-    type: "float_il"
+    type: "float_il",
+    sm: (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(e.sm)) ? String(e.sm) : "12"
   }
 }

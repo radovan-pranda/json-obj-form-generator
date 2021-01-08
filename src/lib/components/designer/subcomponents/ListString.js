@@ -176,17 +176,17 @@ ListString.propTypes = {
     if (props[propName] !== undefined)
     {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0)
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["maxLength"] !== undefined && props["maxLength"] < props[propName])
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than maxlength.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than maxlength.`);
       }
     }
   },
@@ -194,17 +194,17 @@ ListString.propTypes = {
     if (props[propName] !== undefined)
     {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0)
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["minLength"] !== undefined && props["minLength"] > props[propName])
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than minlength.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than minlength.`);
       }
     }
   },
@@ -212,17 +212,17 @@ ListString.propTypes = {
     if (props[propName] !== undefined)
     {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0)
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["max"] !== undefined && props["max"] < props[propName])
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than max.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than max.`);
       }
     }
   },
@@ -230,17 +230,17 @@ ListString.propTypes = {
     if (props[propName] !== undefined)
     {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0)
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["min"] !== undefined && props["min"] > props[propName])
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than min.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than min.`);
       }
     }
   },
@@ -322,9 +322,9 @@ export const validGetArrays = function (e, props) {
       new_value = e.new_value;
     }
 
-    if (e.values !== undefined)
+    if (e.values !== undefined && e.values !== null)
     {
-      values = e.values;
+      values = e.values.map((f) => { return String(f); });
       var valuesLength = values.length;
 
       for (var i = 0; i < valuesLength; i++)

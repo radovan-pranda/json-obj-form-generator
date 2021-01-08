@@ -17,7 +17,7 @@ export default class Extensor extends Component {
   onChange(value) {
     this.setState({ value: value, flag: true });
 
-    if (this.props.onChange != undefined) {
+    if (this.props.onChange !== undefined) {
       this.props.onChange(value);
     }
   }

@@ -51,30 +51,30 @@ InputString.propTypes = {
   minLength: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["maxLength"] !== undefined && props["maxLength"] < props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than maxlength.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than maxlength.`);
       }
     }
   },
   maxLength: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["minLength"] !== undefined && props["minLength"] > props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than minlength.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than minlength.`);
       }
     }
   },

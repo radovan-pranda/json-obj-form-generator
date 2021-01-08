@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CardTitle, Col, FormGroup, Input, CardBody, Label, Button, Collapse, FormFeedback } from 'reactstrap';
+import { Popover, PopoverBody, CustomInput, CardTitle, Col, FormGroup, Input, CardBody, Label, Button, Collapse, FormFeedback } from 'reactstrap';
 import { BoolTranslationPropType, Default_BoolTranslation, Default_keyPropType, keyPropType } from './propTypes';
 import { idGenerator } from './utils';
 import { boolean as icon, invalid_boolean as invalid_icon, error as errorsIcon, errorAlert as errorsAlertIcon } from './icons';
@@ -127,19 +127,64 @@ export class InputBoolean extends Component {
                     bsSize={this.props.size}
                   />
                   <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
+                  <FormGroup check>
+                    <Label size={this.props.size} check>
+                      <Input
+                        name="required"
+                        type="checkbox"
+                        checked={this.props.value.required} onChange={this.onChangeBool}
+                      />
+                      {" " + this.props.translation.required}
+                    </Label>
+                  </FormGroup>
                 </Col>
               </FormGroup>
             </Col>
-            <Col sm={6}>
-              <FormGroup check>
-                <Label size={this.props.size} check>
-                  <Input
-                    name="required"
-                    type="checkbox"
-                    checked={this.props.value.required} onChange={this.onChangeBool}
-                  />
-                  {" " + this.props.translation.required}
-                </Label>
+            <Col sm="6">
+              <FormGroup row className="jofgen-D-form-group">
+                <Col sm={2} className="jofgen-D-inputLabel jofgen-D-inputLabelWithpopUp" >
+                  <Label className="jofgen-D-col-form-label-sm" size={this.props.size} >
+                    {this.props.translations.width}
+                  </Label>
+                  {
+                    (["1","2","3","4","5"].includes(this.props.value.sm))
+                      ? (
+                        <Fragment>
+                          <span id={this.state.gId + "popup"} style={{ float: "right" }} onMouseOver={() => { this.setState({ alertShow: true }) }} onMouseOut={() => { this.setState({ alertShow: false }) }} >
+                            {this.props.icons_set.alert}
+                          </span>
+                          <Popover target={this.state.gId + "popup"} isOpen={this.state.alertShow}>
+                            <PopoverBody>
+                              {this.props.translations.smallWidthAlert}
+                            </PopoverBody>
+                          </Popover>
+                        </Fragment>
+                      )
+                      : null
+                  }
+                </Col>
+                <Col className="jofgen-D-input-col">
+                  <CustomInput
+                    name="sm"
+                    type="select"
+                    value={this.props.value.sm} onChange={this.onChange}
+                    id={this.state.gId + "dropdown"}
+                    bsSize={this.props.size}
+                  >
+                    <option value={1}>1 (12 {this.props.translations.columns})</option>
+                    <option value={2}>2 (6 {this.props.translations.columns})</option>
+                    <option value={3}>3 (4 {this.props.translations.columns})</option>
+                    <option value={4}>4 (3 {this.props.translations.columns})</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6 (2 {this.props.translations.columns})</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                    <option value={9}>9</option>
+                    <option value={10}>10</option>
+                    <option value={11}>11</option>
+                    <option value={12}>12 (1 {this.props.translations.columns})</option>
+                  </CustomInput>
+                </Col>
               </FormGroup>
             </Col>
             <Col sm={12}>
@@ -213,7 +258,8 @@ InputBoolean.propTypes = {
     value: PropTypes.bool,
     default: PropTypes.bool,
     err_default: PropTypes.string,
-    tip: PropTypes.string
+    tip: PropTypes.string,
+    sm: PropTypes.oneOf(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
   }),
 
   translation: PropTypes.shape(BoolTranslationPropType),
@@ -260,7 +306,8 @@ export const clean = function (e) {
     (e.default && e.required) ? { default: e.default } : null,
     (e.default && e.err_default.length > 0 && e.required) ? { err_default: e.err_default } : null,
     (e.tip.length > 0) ? { tip: e.tip } : null,
-    { type: "bool" }
+    { type: "bool" },
+    (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"].includes(e.sm)) ? { sm: e.sm } : null
   )
 }
 
@@ -277,7 +324,8 @@ export const prototype = function () {
     default: false,
     err_default: "",
     tip: "",
-    type: "bool"
+    type: "bool",
+    sm: "12"
   }
 }
 
@@ -290,6 +338,7 @@ export const rebuild = function (e) {
     default: (e.default !== undefined && e.default !== null) ? Boolean(e.default) : false,
     err_default: (e.err_default !== undefined && e.err_default !== null) ? String(e.err_default) : "",
     tip: (e.tip !== undefined && e.tip !== null) ? String(e.tip) : "",
-    type: "bool"
+    type: "bool",
+    sm: (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(e.sm)) ? String(e.sm) : "12"
   }
 }

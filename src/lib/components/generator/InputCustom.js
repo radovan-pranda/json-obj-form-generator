@@ -23,14 +23,14 @@ export class InputCustom extends Component {
             <Clearer {...this.props} clear={this.onChange}>
             <Input
                 name="value"
-                type="text"
+                type={(this.props.is_password) ? "password" : "text"}
                 value={(this.props.value !== null)?this.props.value:""} onChange={this.onChange}
                 placeholder={this.props.placeholder}
                 invalid={this.props.invalid || this.props.errors.invalid}
                 bsSize={this.props.size}
             />
             </Clearer>
-            <FormText hidden={this.props.errors.warn_def} color="info" className="jofgen-warning jofgen-warning-regx">{this.props.warn_def + ' ' + this.props.default}</FormText>
+            <FormText hidden={this.props.errors.warn_def} color="info" className="jofgen-warning jofgen-warning-regx">{`${this.props.warn_def} ${this.props.default}`}</FormText>
             <FormText hidden={this.props.errors.err_req} color="danger" className="jofgen-warning jofgen-warning-regx">{this.props.err_req}</FormText>
             <FormText hidden={this.props.errors.err_type} color="danger" className="jofgen-warning jofgen-warning-regx">{this.props.err_type}</FormText>
         </Fragment>);
@@ -57,7 +57,7 @@ InputCustom.propTypes = {
           }
           catch
           {
-            return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Invalid regular expression');
+            return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Invalid regular expression`);
           }
         }
     },

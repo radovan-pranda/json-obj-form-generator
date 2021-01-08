@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CardTitle, Col, FormGroup, Input, CardBody, Label, Button, Collapse, FormFeedback, CustomInput, Row } from 'reactstrap';
+import { Popover, PopoverBody, CardTitle, Col, FormGroup, Input, CardBody, Label, Button, Collapse, FormFeedback, CustomInput, Row } from 'reactstrap';
 import { PackTranslationPropType, Default_PackTranslation, Default_keyPropType, keyPropType } from './propTypes';
 import { idGenerator } from './utils';
 import { section as icon, invalid_section as invalid_icon, error as errorsIcon, errorAlert as errorsAlertIcon } from './icons';
@@ -57,7 +57,7 @@ export class SectionPackage extends Component {
     validation[1][idx] = sub_validation;
 
     var uids = this.props.uids;
-    uids[1][idx] = (value.uid !== undefined && value.uid !== null)?value.uid:null;
+    uids[1][idx] = (value.uid !== undefined && value.uid !== null) ? value.uid : null;
 
     if (this.props.onChangeSub) {
       this.props.onChangeSub(props, validation, uids, sub_items);
@@ -94,8 +94,8 @@ export class SectionPackage extends Component {
     var uids = this.props.uids;
     var sub_items = this.props.sub_items;
 
-    props.sub.splice(position, 0, { ...this.props.package_designer_aliases.sec.prototype() });  
-    sub_items.sub.splice(position, 0, { ...this.props.package_designer_aliases.sec.clean({...this.props.designer_aliases.sec.prototype()}) });  
+    props.sub.splice(position, 0, { ...this.props.package_designer_aliases.sec.prototype() });
+    sub_items.sub.splice(position, 0, { ...this.props.package_designer_aliases.sec.clean({ ...this.props.designer_aliases.sec.prototype() }) });
     uids[1].splice(position, 0, this.props.package_designer_aliases.sec.defaultUid());
     validation[1].splice(position, 0, this.props.package_designer_aliases.sec.defaultValid());
 
@@ -130,7 +130,7 @@ export class SectionPackage extends Component {
     }
   }.bind(this)
 
-  changePosition = function (idx, move) {    
+  changePosition = function (idx, move) {
     var props = this.props.value;
     var validation = this.props.valid;
     var uids = this.props.uids;
@@ -202,6 +202,53 @@ export class SectionPackage extends Component {
                 </Col>
               </FormGroup>
             </Col>
+            <Col sm="6">
+              <FormGroup row className="jofgen-D-form-group">
+                <Col sm={2} className="jofgen-D-inputLabel jofgen-D-inputLabelWithpopUp" >
+                  <Label className="jofgen-D-col-form-label-sm" size={this.props.size} >
+                    {this.props.translations.width}
+                  </Label>
+                  {
+                    (["1","2","3","4","5"].includes(this.props.value.sm))
+                      ? (
+                        <Fragment>
+                          <span id={this.state.gId + "popup"} style={{ float: "right" }} onMouseOver={() => { this.setState({ alertShow: true }) }} onMouseOut={() => { this.setState({ alertShow: false }) }} >
+                            {this.props.icons_set.alert}
+                          </span>
+                          <Popover target={this.state.gId + "popup"} isOpen={this.state.alertShow}>
+                            <PopoverBody>
+                              {this.props.translations.smallWidthAlert}
+                            </PopoverBody>
+                          </Popover>
+                        </Fragment>
+                      )
+                      : null
+                  }
+                </Col>
+                <Col className="jofgen-D-input-col">
+                  <CustomInput
+                    name="sm"
+                    type="select"
+                    value={this.props.value.sm} onChange={this.onChange}
+                    id={this.state.gId + "dropdown"}
+                    bsSize={this.props.size}
+                  >
+                    <option value={1}>1 (12 {this.props.translations.columns})</option>
+                    <option value={2}>2 (6 {this.props.translations.columns})</option>
+                    <option value={3}>3 (4 {this.props.translations.columns})</option>
+                    <option value={4}>4 (3 {this.props.translations.columns})</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6 (2 {this.props.translations.columns})</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                    <option value={9}>9</option>
+                    <option value={10}>10</option>
+                    <option value={11}>11</option>
+                    <option value={12}>12 (1 {this.props.translations.columns})</option>
+                  </CustomInput>
+                </Col>
+              </FormGroup>
+            </Col>
             <Col sm={6}>
               <FormGroup row>
                 <Label sm={2} size={this.props.size} className="jofgen-D-inputLabel" >{this.props.translation.mode}</Label>
@@ -251,12 +298,12 @@ export class SectionPackage extends Component {
                             onUpButtonClick={(idx > 0) ? (() => this.changePosition(idx, -1)) : undefined}
                             onDownButtonClick={(idx < no_of_elements) ? (() => this.changePosition(idx, 1)) : undefined}
                             onRemoveButtonClick={() => this.removeChildren(idx)}
-                            hideDissabled={false}
+                            hideDissabled={this.props.hideDissabled}
                             extras={this.props.sub_items.sub[idx]}
                             icons={this.props.icons_set.container}
                             extended={this.props.extended}
                           >
-                            <Tag 
+                            <Tag
                               size={this.props.size}
                               invalid={this.props.invalid[1][idx]}
                               uids={this.props.uids[1][idx]}
@@ -265,17 +312,17 @@ export class SectionPackage extends Component {
                               mode={this.props.mode}
                               sub_items={this.props.sub_items.sub[idx]}
                               className={this.props.className}
-                              size={this.props.size}
                               jkey={this.props.jkey}
-                              sm={this.props.sm}                                                    
+                              hideDissabled={this.props.hideDissabled}
+                              sm={this.props.sm}
                               icons_set={this.props.icons_set}
                               icons={this.props.icons_set.types[item.type]}
-                              onChange={(value, validation) => { this.onChangeChildren(value, validation, idx) }}                                
+                              onChange={(value, validation) => { this.onChangeChildren(value, validation, idx) }}
                               onChangeSub={(value, validation, uids, sub_items) => { this.onChangeSub(value, validation, uids, sub_items, idx) }}
-                              
+
                               translation={this.props.translations.types[item.type]}
                               translations={this.props.translations}
-                              
+
                               designer_aliases={this.props.designer_aliases}
                               package_designer_aliases={this.props.package_designer_aliases}
                               extended={this.props.extended}
@@ -310,7 +357,8 @@ SectionPackage.propTypes = {
   value: PropTypes.shape({
     uid: PropTypes.string,
     design: PropTypes.oneOf(["unlisted", "list", "stack"]),
-    sub: PropTypes.arrayOf(PropTypes.object)
+    sub: PropTypes.arrayOf(PropTypes.object),
+    sm: PropTypes.oneOf(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
   }),
 
   translation: PropTypes.shape(PackTranslationPropType),
@@ -351,12 +399,15 @@ SectionPackage.defaultProps = {
 
 
 export const clean = function (e) {
-  return {
-    uid: e.uid,
-    design: e.design,
-    type: "pack",
-    sub: e.sub
-  }
+  return Object.assign(
+    {
+      uid: e.uid,
+      design: e.design,
+      type: "pack",
+      sub: e.sub
+    },
+    (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"].includes(e.sm)) ? { sm: e.sm } : null
+  );
 }
 
 export const valid = function (e) {
@@ -368,7 +419,8 @@ export const prototype = function () {
     uid: "",
     design: "list",
     type: "pack",
-    sub: []
+    sub: [],
+    sm: "12"
   }
 }
 
@@ -377,7 +429,8 @@ export const rebuild = function (e) {
     uid: (e.uid !== undefined && e.uid !== null) ? String(e.uid) : "",
     design: (e.mode !== undefined && e.mode !== null && ["unlisted", "list", "stack"].includes(e.mode)) ? String(e.mode) : "list",
     type: "pack",
-    sub: []
+    sub: [],
+    sm: (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(e.sm)) ? String(e.sm) : "12"
   }
 }
 

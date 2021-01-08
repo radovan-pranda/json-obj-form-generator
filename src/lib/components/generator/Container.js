@@ -17,7 +17,7 @@ export default class Container extends Component {
     render() {
         if (this.props.tip !== undefined && this.props.tip.length > 0) {
             return (
-                <Col sm={this.props.sm} className={this.props.className + " jofgen-item jofgen-color"} style={this.props.style}>
+                <Col sm={this.props.sm} className={this.props.className + " jofgen-item"} style={this.props.style}>
                     <FormGroup row>
                         <Col sm="6">
                             <Label size={this.props.size} style={{ width: "calc(100% - 22px)" }} >
@@ -28,6 +28,7 @@ export default class Container extends Component {
                                         )
                                         : this.props.name
                                 }
+                                {(this.props.required && this.props.req_indicator !== undefined)?<span className="jofgen-required-item">{this.props.req_indicator}</span>:null}
                             </Label>
                             <span id={this.state.gId} style={{ float: "right" }} onMouseOver={this.showInfoPopUp} onMouseOut={this.hideInfoPopUp} >{this.props.icon}</span>
                             <Popover target={this.state.gId} isOpen={this.state.popUp} >
@@ -55,6 +56,7 @@ export default class Container extends Component {
                                     )
                                     : this.props.name
                             }
+                            {(this.props.required && this.props.req_indicator !== undefined)?<span className="jofgen-required-item">{this.props.req_indicator}</span>:null}
                         </Label>
                         <Col sm={6} className="jofgen-input-col">
                             {this.props.children}

@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Col, FormGroup, Label, CardTitle, CardBody, Button, Collapse, FormFeedback } from 'reactstrap';
+import { Popover, PopoverBody, CustomInput, Input, Col, FormGroup, Label, CardTitle, CardBody, Button, Collapse, FormFeedback } from 'reactstrap';
 import { Default_FloatTranslation, FloatTranslationPropType, Default_keyPropType, keyPropType } from './propTypes';
 import { idGenerator } from './utils';
 import { filterFloat, floatValid } from './validators';
-import { float as icon, invalid_float as invalid_icon, warnings as warningsIcon, warningAlert as warningsAlertIcon, error as errorsIcon, errorAlert as errorsAlertIcon, float } from './icons';
+import { float as icon, invalid_float as invalid_icon, warnings as warningsIcon, warningAlert as warningsAlertIcon, error as errorsIcon, errorAlert as errorsAlertIcon } from './icons';
 import ErrorContainer from './ErrorContainer';
 
 export class InputFloat extends Component {
@@ -171,19 +171,64 @@ export class InputFloat extends Component {
                   bsSize={this.props.size}
                 />
                 <FormFeedback valid={false} >{this.props.translation.messages.uid}</FormFeedback>
+                <FormGroup check>
+                  <Label size={this.props.size} check>
+                    <Input
+                      name="required"
+                      type="checkbox"
+                      checked={this.props.value.required} onChange={this.onChangeBool}
+                    />
+                    {" " + this.props.translation.required}
+                  </Label>
+                </FormGroup>
               </Col>
             </FormGroup>
           </Col>
-          <Col sm={6}>
-            <FormGroup check>
-              <Label size={this.props.size} check>
-                <Input
-                  name="required"
-                  type="checkbox"
-                  checked={this.props.value.required} onChange={this.onChangeBool}
-                />
-                {" " + this.props.translation.required}
-              </Label>
+          <Col sm="6">
+            <FormGroup row className="jofgen-D-form-group">
+              <Col sm={2} className="jofgen-D-inputLabel jofgen-D-inputLabelWithpopUp" >
+                <Label className="jofgen-D-col-form-label-sm" size={this.props.size} >
+                  {this.props.translations.width}
+                </Label>
+                {
+                  (["1","2","3","4","5"].includes(this.props.value.sm))
+                    ? (
+                      <Fragment>
+                        <span id={this.state.gId + "popup"} style={{ float: "right" }} onMouseOver={() => { this.setState({ alertShow: true }) }} onMouseOut={() => { this.setState({ alertShow: false }) }} >
+                          {this.props.icons_set.alert}
+                        </span>
+                        <Popover target={this.state.gId + "popup"} isOpen={this.state.alertShow}>
+                          <PopoverBody>
+                            {this.props.translations.smallWidthAlert}
+                          </PopoverBody>
+                        </Popover>
+                      </Fragment>
+                    )
+                    : null
+                }
+              </Col>
+              <Col className="jofgen-D-input-col">
+                <CustomInput
+                  name="sm"
+                  type="select"
+                  value={this.props.value.sm} onChange={this.onChange}
+                  id={this.state.gId + "dropdown"}
+                  bsSize={this.props.size}
+                >
+                  <option value={1}>1 (12 {this.props.translations.columns})</option>
+                  <option value={2}>2 (6 {this.props.translations.columns})</option>
+                  <option value={3}>3 (4 {this.props.translations.columns})</option>
+                  <option value={4}>4 (3 {this.props.translations.columns})</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6 (2 {this.props.translations.columns})</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                  <option value={10}>10</option>
+                  <option value={11}>11</option>
+                  <option value={12}>12 (1 {this.props.translations.columns})</option>
+                </CustomInput>
+              </Col>
             </FormGroup>
           </Col>
           <Col sm={6}>
@@ -417,7 +462,8 @@ InputFloat.propTypes = {
     err_inf: PropTypes.string,
     warn_def: PropTypes.string,
     placeholder: PropTypes.string,
-    tip: PropTypes.string
+    tip: PropTypes.string,
+    sm: PropTypes.oneOf(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
   }),
 
   translation: PropTypes.shape(FloatTranslationPropType),
@@ -478,6 +524,14 @@ export const clean = function (e) {
   var fDefault = filterFloat(e.default);
   var fMin = filterFloat(e.min);
   var fMax = filterFloat(e.max);
+
+  var isnt_nan = {
+    fMin: !Number.isNaN(fMin),
+    fMax: !Number.isNaN(fMax),
+    fValue: !Number.isNaN(fValue),
+    fDefault: !Number.isNaN(fDefault)
+  };
+
   var doMax = fMax && (fMin <= fMax || !fMin) && isNTLastDot(e.max);
   var doMin = (fMin && (fMin <= fMax || !fMax) && isNTLastDot(e.min));
 
@@ -485,8 +539,8 @@ export const clean = function (e) {
     { uid: e.uid },
     (e.name.length > 0) ? { name: e.name } : null,
     (e.required) ? { required: e.required } : null,
-    (fValue && (fValue <= fMax || !fMax) && (fValue >= fMin || !fMin) && isNTLastDot(e.value)) ? { value: +e.value } : null,
-    (fDefault && (fDefault <= fMax || !fMax) && (fDefault >= fMin || !fMin) && isNTLastDot(e.default) && e.required) ? { default: +e.default } : null,
+    (isnt_nan["fValue"] && (fValue <= fMax || !isnt_nan["fMax"]) && (fValue >= fMin || !isnt_nan["fMin"]) && isNTLastDot(e.value)) ? { value: fValue } : null,
+    (isnt_nan["fDefault"] && (fDefault <= fMax || !isnt_nan["fMax"]) && (fDefault >= fMin || !isnt_nan["fMin"]) && isNTLastDot(e.default) && e.required) ? { default: fDefault } : null,
     (doMin) ? { min: +e.min } : null,
     (doMax) ? { max: +e.max } : null,
     (e.err_min.length > 0 && doMin) ? { err_min: e.err_min } : null,
@@ -494,10 +548,11 @@ export const clean = function (e) {
     (e.err_req.length > 0) ? { err_req: e.err_req } : null,
     (e.err_type.length > 0) ? { err_type: e.err_type } : null,
     (e.err_inf.length > 0) ? { err_inf: e.err_inf } : null,
-    (e.warn_def.length > 0 && fDefault && (fDefault <= fMax || !fMax) && (fDefault >= fMin || !fMin) && isNTLastDot(e.default) && e.required) ? { warn_def: e.warn_def } : null,
+    (e.warn_def.length > 0 && isnt_nan["fDefault"] && (fDefault <= fMax || !isnt_nan["fMax"]) && (fDefault >= fMin || !isnt_nan["fMin"]) && isNTLastDot(e.default) && e.required) ? { warn_def: e.warn_def } : null,
     (e.placeholder.length > 0) ? { placeholder: e.placeholder } : null,
     (e.tip.length > 0) ? { tip: e.tip } : null,
-    { type: "float" }
+    { type: "float" },
+    (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"].includes(e.sm)) ? { sm: e.sm } : null
   )
 }
 
@@ -526,7 +581,8 @@ export const prototype = function () {
     warn_def: "",
     placeholder: "",
     tip: "",
-    type: "float"
+    type: "float",
+    sm: "12"
   }
 }
 
@@ -547,6 +603,7 @@ export const rebuild = function (e) {
     warn_def: (e.warn_def !== undefined && e.warn_def !== null) ? String(e.warn_def) : "",
     placeholder: (e.placeholder !== undefined && e.placeholder !== null) ? String(e.placeholder) : "",
     tip: (e.tip !== undefined && e.tip !== null) ? String(e.tip) : "",
-    type: "float"
+    type: "float",
+    sm: (e.sm !== undefined && e.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(e.sm)) ? String(e.sm) : "12"
   }
 }

@@ -23,7 +23,7 @@ export class InputBoolean extends Component {
                 <Clearer {...this.props} clear={this.onChange}>
                     <Input name="value" type="checkbox" checked={(this.props.value !== null)?this.props.value:false} onChange={this.onChange} />
                 </Clearer>
-                {(!this.props.errors.err_default) ? <FormText color="danger" className="jofgen-error jofgen-error-bool">{this.props.obj_translation.err_default}</FormText> : null}
+                {(!this.props.errors.err_default) ? <FormText color="danger" className="jofgen-error jofgen-error-bool">{this.props.err_default}</FormText> : null}
             </Fragment>
         );
     }
@@ -35,9 +35,7 @@ InputBoolean.propTypes = {
     value: PropTypes.bool,
     default: PropTypes.bool,
     errors: PropTypes.object,
-    obj_translation: PropTypes.shape({        
-        err_default: PropTypes.string.isRequired
-    }),
+    err_default: PropTypes.string,
     size: PropTypes.string,
     onChange: PropTypes.func,
     isValid: PropTypes.func,
@@ -52,9 +50,7 @@ InputBoolean.defaultProps = {
     uid: "",
     required: false,
     value: null,
-    obj_translation: {
-        err_default: "It is required to check this input"
-    },
+    err_default: "It is required to check this input",
     className: "",
     size: "sm",
     jkey: Default_keyPropType,

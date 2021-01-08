@@ -11,6 +11,7 @@ import {
 import { isValid, getUids, jsonValid, jsonToMeta } from './components/designer';
 import { generator_aliases } from './components/shared';
 import { fatal_error } from './components/generator/icons';
+import { Col } from 'reactstrap';
 
 export default class Generator extends Component {
   state = {
@@ -28,7 +29,7 @@ export default class Generator extends Component {
 
     if (!prevState.flag) {
       if (typeof nextProps.json !== "object" || !Array.isArray(nextProps.json)) {
-        console.error("Parameter JSON must be array"); 
+        console.error("Parameter JSON must be array");
         return { fatal_error: true }
       }
 
@@ -42,7 +43,7 @@ export default class Generator extends Component {
         }
 
         var nextState = { fatal_error: false };
-        var meta;
+        //var meta;
 
         if (nextProps.value !== undefined) {
           meta = toMeta[nextProps.mode](nextProps.json, nextProps.value, nextProps.sep);
@@ -50,7 +51,7 @@ export default class Generator extends Component {
           nextState.errors = meta[1];
           nextState.defaults = meta[2];
           nextState.req = meta[3];
-          nextState.json = nextProps.json;   
+          nextState.json = nextProps.json;
         }
         else {
           meta = jsonToMeta_Tree(nextProps.json);
@@ -75,7 +76,7 @@ export default class Generator extends Component {
     }
   }
 
-  onChange = function (unique_id, value, valid, idx) {
+  onChange = function (unique_id, value) {
     var prevVal = this.state.meta;
     var prevErr = this.state.errors;
 
@@ -105,22 +106,22 @@ export default class Generator extends Component {
   render() {
     if (this.state.fatal_error) {
       return (
-        <div className={(this.props.className !== undefined) ? (this.props.className) : "" + " jofgen-fatal-error"} style={this.props.style} >
-          {this.props.fatal_error.icon}
+        <div className={`${(this.props.className !== undefined) ? (this.props.className) : ""} jofgen-fatal-error`} style={this.props.style} >
+          {this.props.fatal_error_icon}
           <div className="jofgen-text-fatal-error">
-            {this.props.fatal_error.text}
+            {this.props.fatal_error_msg}
           </div>
         </div>
       )
     }
 
     var genaliaseskeys = Object.keys(generator_aliases);
-    return <div className={this.props.className} style={this.props.style} >
+    return <div className={"row " + ((this.props.className) ? this.props.className : "")} style={this.props.style} >
       {this.state.json.map(
         (item, idx) => {
           var Tag;
           var gen;
-
+          
           if (genaliaseskeys.includes(item.type)) {
             gen = generator_aliases[item.type];
           }
@@ -133,7 +134,20 @@ export default class Generator extends Component {
           if (gen.useContainer) {
             return (
               <Fragment key={idx}>
-                <Container {...item} >
+                <Container
+                  {...item}
+                  sm={
+                    (
+                      (item.sm !== undefined && item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(item.sm))
+                        ? item.sm
+                        : (
+                          (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                            ? this.props.sm
+                            : "12"
+                        )
+                    )
+                  }
+                  req_indicator={this.props.req_indicator} >
                   <Tag {...item}
                     mode={this.props.mode}
                     errors={this.state.errors[item.uid]}
@@ -143,10 +157,11 @@ export default class Generator extends Component {
                     jkey={this.props.jkey}
                     invalid={false}
                     sm={this.props.sm}
-                    onChange={(id, val, valid) => { this.onChange(id, val, valid, idx) }}
+                    onChange={(id, val) => { this.onChange(id, val) }}
                     isValid={() => { }}
                     invalidCheck={invalidCheck}
                     generator_aliases={generator_aliases}
+                    req_indicator={this.props.req_indicator}
                   />
                 </Container>
               </Fragment>
@@ -155,20 +170,34 @@ export default class Generator extends Component {
           else {
             return (
               <Fragment>
-                <Tag {...item}
-                  mode={this.props.mode}
-                  errors={this.state.errors[item.uid]}
-                  value={this.state.meta[item.uid]}
-                  className={this.props.className}
-                  size={this.props.size}
-                  jkey={this.props.jkey}
-                  invalid={false}
-                  sm={this.props.sm}
-                  onChange={(id, val, valid) => { this.onChange(id, val, valid, idx) }}
-                  isValid={() => { }}
-                  invalidCheck={invalidCheck}
-                  generator_aliases={generator_aliases}
-                />
+                <Col sm={
+                  (
+                    (item.sm !== undefined && item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(item.sm))
+                      ? item.sm
+                      : (
+                        (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                          ? this.props.sm
+                          : "12"
+                      )
+                  )
+                }
+                >
+                  <Tag {...item}
+                    mode={this.props.mode}
+                    errors={this.state.errors[item.uid]}
+                    value={this.state.meta[item.uid]}
+                    className={this.props.className}
+                    size={this.props.size}
+                    req_indicator={this.props.req_indicator}
+                    jkey={this.props.jkey}
+                    invalid={false}
+                    sm={this.props.sm}
+                    onChange={(id, val) => { this.onChange(id, val) }}
+                    isValid={() => { }}
+                    invalidCheck={invalidCheck}
+                    generator_aliases={generator_aliases}
+                  />
+                </Col>
               </Fragment>
             );
           }
@@ -183,11 +212,11 @@ Generator.propTypes = {
   isValid: PropTypes.func,
   json: function (props, propName, componentName) {
     if (props[propName] === undefined) {
-      return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value is required, otherwise there is nothing to generate here.');
+      return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value is required, otherwise there is nothing to generate here.`);
     }
 
     if (!Array.isArray(props[propName])) {
-      return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be object or array of objects.');
+      return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be object or array of objects.`);
     }
 
 
@@ -196,20 +225,20 @@ Generator.propTypes = {
     var valid = jsonValid(meta);
 
     if (!isValid(uids, valid, props["mode"])) {
-      return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. JSON object is not valid - some IDs are not unique.');
+      return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. JSON object is not valid - some IDs are not unique.`);
     }
 
   },
   value: PropTypes.object,
   mode: PropTypes.oneOf(["tree", "linear", "linear_merge"]),
   sep: PropTypes.string,
+  req_indicator: PropTypes.any,
   size: PropTypes.string,
   jkey: PropTypes.shape(keyPropType),
   sm: PropTypes.oneOf(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]),
-  fatal_error: PropTypes.shape({
-    icon: PropTypes.any,
-    text: PropTypes.string
-  })
+
+  fatal_error_msg: PropTypes.string.isRequired,
+  fatal_error_icon: PropTypes.any.isRequired,
 };
 
 Generator.defaultProps = {
@@ -219,8 +248,7 @@ Generator.defaultProps = {
   sep: ".",
   sm: "12",
   size: "sm",
-  fatal_error: {
-    icon: fatal_error,
-    text: "Ooops... Something went wrong. Unable to render form."
-  }
+  req_indicator: "*",
+  fatal_error_icon: fatal_error,
+  fatal_error_msg: "Ooops... Something went wrong. Unable to render form."
 };

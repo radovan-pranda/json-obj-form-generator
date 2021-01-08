@@ -45,7 +45,7 @@ export const metaValueToTree = function (obj, def, req, errs) {
         for (var i = 0; i < len; i++) {
             key = keys[i];
             if (typeof obj[key] === "object" && !Array.isArray(obj[key]) && obj[key] !== null) {
-                result[key] = metaValueToLinear(obj[key], def[key], req[key], errs[key]);
+                result[key] = metaValueToTree(obj[key], def[key], req[key], errs[key]);
             }
             else {
                 if (def[key] !== null && req[key] && !errs[key].warn_def) {

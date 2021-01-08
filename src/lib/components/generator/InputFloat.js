@@ -148,7 +148,7 @@ export const getErrors = function (e, props) {
         var max = String(props.max);
         var new_value_valid = floatValid(new_value);
 
-        var w_d = !(e.length === 0 && props.default !== undefined && props.required);
+        var w_d = !(e.length === 0 && props.default !== undefined && props.default !== null && props.required);
         var e_t = new_value_valid || (String(new_value).length === 0 && props.required);
         var e_r = (String(new_value).length > 0 && props.required) || !props.required;
         var e_ml = !floatValid(min) || !new_value_valid || filter_new_value >= filterFloat(min);

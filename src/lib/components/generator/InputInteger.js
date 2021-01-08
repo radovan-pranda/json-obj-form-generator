@@ -11,7 +11,7 @@ export class InputInteger extends Component {
         var val = e.target.value;
         var err = getErrors(e.target.value, this.props);
         var value = {
-            value: (err.err_type && val !== null && val.length > 0)?filterInt(String(val)):val,
+            value: (err.err_type && val !== null && val.length > 0) ? filterInt(String(val)) : val,
             errors: err
         };
 
@@ -22,16 +22,16 @@ export class InputInteger extends Component {
 
     render() {
         return (
-            <Fragment>                
+            <Fragment>
                 <Clearer {...this.props} clear={this.onChange}>
-                <Input
-                    name="value"
-                    type="text"
-                    value={(this.props.value !== null)?this.props.value:""} onChange={this.onChange}
-                    placeholder={this.props.placeholder}
-                    invalid={this.props.invalid || this.props.errors.invalid}
-                    bsSize={this.props.size}
-                />
+                    <Input
+                        name="value"
+                        type="text"
+                        value={(this.props.value !== null) ? this.props.value : ""} onChange={this.onChange}
+                        placeholder={this.props.placeholder}
+                        invalid={this.props.invalid || this.props.errors.invalid}
+                        bsSize={this.props.size}
+                    />
                 </Clearer>
                 <FormText hidden={this.props.errors.warn_def} color="info" className="jofgen-warning jofgen-warning-int">{this.props.warn_def + ' ' + this.props.default}</FormText>
                 <FormText hidden={this.props.errors.err_type} color="danger" className="jofgen-warning jofgen-warning-int">{this.props.err_type}</FormText>
@@ -51,36 +51,36 @@ InputInteger.propTypes = {
     value: function (props, propName, componentName) {
         if (props[propName] !== undefined) {
             if (!intValid(String(props[propName]))) {
-                return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+                return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
             }
         }
     },
     default: function (props, propName, componentName) {
         if (props[propName] !== undefined) {
             if (!intValid(String(props[propName]))) {
-                return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+                return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
             }
         }
     },
     min: function (props, propName, componentName) {
         if (props[propName] !== undefined) {
             if (!intValid(String(props[propName]))) {
-                return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+                return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
             }
 
             if (props["max"] !== undefined && props["max"] < props[propName]) {
-                return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than max.');
+                return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than max.`);
             }
         }
     },
     max: function (props, propName, componentName) {
         if (props[propName] !== undefined) {
             if (!intValid(String(props[propName]))) {
-                return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+                return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
             }
 
             if (props["min"] !== undefined && props["min"] > props[propName]) {
-                return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than min.');
+                return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than min.`);
             }
         }
     },
@@ -136,7 +136,7 @@ export const getErrors = function (e, props) {
         var max = String(props.max);
         var new_value_valid = intValid(new_value);
 
-        var w_d = !(e.length === 0 && props.default !== undefined && props.required);
+        var w_d = !(e.length === 0 && props.default !== undefined && props.default !== null && props.required);
         var e_t = new_value_valid || (String(new_value).length === 0 && props.required);
         var e_r = (String(new_value).length > 0 && props.required) || !props.required;
         var e_ml = !intValid(min) || !new_value_valid || filter_new_value >= filterInt(min);
@@ -168,28 +168,23 @@ export const getErrors = function (e, props) {
 
 export const getValue = function (e, props) {
     if (props.required) {
-        if (e === undefined || e === null || e.length === 0)
-        {
-            if (props.default === null || props.default === undefined)
-            {
+        if (e === undefined || e === null || e.length === 0) {
+            if (props.default === null || props.default === undefined) {
                 return "";
             }
 
             return props.default;
-        } 
-        else
-        {
-            return (intValid(e))?filterInt(e):e;
+        }
+        else {
+            return (intValid(e)) ? filterInt(e) : e;
         }
     }
     else {
-        if (e === undefined || e === null)
-        {
+        if (e === undefined || e === null) {
             return null;
         }
-        else
-        {
-            return (intValid(e))?filterInt(e):e;
+        else {
+            return (intValid(e)) ? filterInt(e) : e;
         }
     }
 }

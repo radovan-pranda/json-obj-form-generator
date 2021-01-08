@@ -168,17 +168,17 @@ ListCustom.propTypes = {
     if (props[propName] !== undefined)
     {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0)
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["max"] !== undefined && props["max"] < props[propName])
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than max.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than max.`);
       }
     }
   },
@@ -186,17 +186,17 @@ ListCustom.propTypes = {
     if (props[propName] !== undefined)
     {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0)
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["min"] !== undefined && props["min"] > props[propName])
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than min.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than min.`);
       }
     }
   },
@@ -209,7 +209,7 @@ ListCustom.propTypes = {
       }
       catch
       {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Invalid regular expression');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Invalid regular expression`);
       }
     }
   },
@@ -263,18 +263,22 @@ const isValid = function (value, props) {
 }
 
 export const validGetArrays = function (e, props) {
+  var result;
+  var values;
+  var valuesLength;
+
   try 
   {
     var rgx_test = new RegExp(props.regex);
-    var result = {
+    result = {
       new_value: e.new_value,
       new_type: (e.new_value.length === 0)?true:rgx_test.test(e.new_value),
       values: [],
       etype: []
     }
 
-    var values = e.values;
-    var valuesLength = values.length;
+    values = e.values;
+    valuesLength = values.length;
     
     for (var i = 0; i < valuesLength; i++) 
     {
@@ -286,17 +290,17 @@ export const validGetArrays = function (e, props) {
   }
   catch
   {
-    var result = {
+    result = {
       new_value: e.new_value,
       new_type: false,
       values: [],
       etype: []
     }
 
-    var values = e.values;
-    var valuesLength = values.length;
+    values = e.values;
+    valuesLength = values.length;
     
-    for (var i = 0; i < valuesLength; i++) 
+    for (var j = 0; j < valuesLength; j++) 
     {
       result.values.push(values[i]);
       result.etype.push(false);
@@ -319,7 +323,7 @@ export const rebuild = function (e, props) {
   return validGetArrays({
     new_value: "",
     new_type: true,
-    values: e,
+    values: (e && Array.isArray(e))?e:[],
     etype: []
   }, props);
 }

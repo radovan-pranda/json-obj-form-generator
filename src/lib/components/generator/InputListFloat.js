@@ -67,11 +67,11 @@ export class InputListFloat extends Component {
     err.invalidArr.push(!test[3]);
     
     
-    err.err_minNo = (this.props.minNo !== undefined && intValid(this.props.minNo) && filterInt(this.props.minNo) > val.length);
-    err.err_maxNo = (this.props.maxNo !== undefined && intValid(this.props.maxNo) && filterInt(this.props.maxNo) < val.length);
+    err.err_minNo = (intValid(this.props.minNo) && filterInt(this.props.minNo) > val.length);
+    err.err_maxNo = (intValid(this.props.maxNo) && filterInt(this.props.maxNo) < val.length);
     err.invalid = err.err_minNo || err.err_maxNo || err.invalidArr.includes(true);
     err.err_req = (this.props.required && val.length === 0 && err.err_minNo);
-
+    err.warn_def = true;
     err.new_invalid = false;
     err.new_min = false;
     err.new_max = false;
@@ -98,21 +98,21 @@ export class InputListFloat extends Component {
     err.emax.splice(idx, 1);
     err.etype.splice(idx, 1);
 
-    err.err_minNo = ((!this.props.required && val === null) || (this.props.minNo !== undefined && intValid(this.props.minNo) && filterInt(this.props.minNo) > val.length));
-    err.err_maxNo = (this.props.maxNo !== undefined && intValid(this.props.maxNo) && filterInt(this.props.maxNo) < val.length);
-    err.warn_def = !(val.length === 0 && this.props.default !== undefined && this.props.required);
+    err.warn_def = !(val.length === 0 && this.props.default && Array.isArray(this.props.default) && this.props.required && intValid(this.props.minNo) && filterInt(this.props.minNo) <= this.props.default.length && filterInt(this.props.minNo) > 0);
+    err.err_minNo = err.warn_def && ((!this.props.required && val === null) || (intValid(this.props.minNo) && filterInt(this.props.minNo) > val.length));
+    err.err_maxNo = err.warn_def && (intValid(this.props.maxNo) && filterInt(this.props.maxNo) < val.length);
     err.invalid = err.err_minNo || err.err_maxNo || err.invalidArr.includes(true);
     err.err_req = (this.props.required && val.length === 0 && err.err_minNo);
         
     var sinvalid = [];
 
     if (val.length === 0 && this.props.required && this.props.default && this.props.minNo !== undefined && this.props.minNo > 0) {
-      err.warn_def = true;
-      var err_minNo = (this.props.minNo !== undefined && intValid(this.props.minNo) && filterInt(this.props.minNo) > this.props.default.length);
-      var err_maxNo = (this.props.maxNo !== undefined && intValid(this.props.maxNo) && filterInt(this.props.maxNo) < this.props.default.length);
+      var err_minNo = (intValid(this.props.minNo) && filterInt(this.props.minNo) > this.props.default.length);
+      var err_maxNo = (intValid(this.props.maxNo) && filterInt(this.props.maxNo) < this.props.default.length);
+      err.err_req = (this.props.required && val.length === 0 && err_minNo);
 
       for (var i = 0; i < this.props.default.length; i++) {
-        sinvalid.push(valid(this.props.default[i], this.props)[3]);
+        sinvalid.push(!valid(this.props.default[i], this.props)[3]);
       }
 
       err.invalid = err_minNo || err_maxNo || sinvalid.includes(true);
@@ -202,15 +202,14 @@ export class InputListFloat extends Component {
       );
     }
 
-
     return (
       <div className="jofgen-card-lst">
         <Clearer {...this.props} clear={this.Clear}>
-          <div class={"jofgen-list-body" + ((!this.props.required) ? "-mr" : "")} >
+          <div className={"jofgen-list-body" + ((!this.props.required) ? "-mr" : "")} >
             {new_element}
             {
               (!this.props.errors.warn_def && this.props.required)
-                ? (<FormText color="info">{this.props.warn_def}: [{this.props.default.map((value, key) => { return "\"" + value + ((this.props.default.length - 1 !== key) ? "\", " : "\"") })}]</FormText>)
+                ? (<FormText color="info">{this.props.warn_def}: [{this.props.default.map((value, key) => { return value + ((this.props.default.length - 1 !== key) ? ", " : "") })}]</FormText>)
                 : null
             }
             {(this.props.errors.err_req) ? <FormText color="danger">{this.props.err_req}</FormText> : null}
@@ -218,7 +217,7 @@ export class InputListFloat extends Component {
             {(this.props.errors.err_maxNo) ? <FormText color="danger">{this.props.err_maxNo}</FormText> : null}
             <TransitionGroup>
               {
-                (this.props.value !== null) ? (
+                (this.props.value !== null && Array.isArray(this.props.value)) ? (
                   this.props.value.map((item, idx) => {
 
                     return (
@@ -302,7 +301,7 @@ InputListFloat.propTypes = {
     function (props, propName, componentName) {
       if (props[propName] !== undefined) {
         if (!floatValid(String(props[propName]))) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be float.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be float.`);
         }
       }
     }
@@ -311,7 +310,7 @@ InputListFloat.propTypes = {
     function (props, propName, componentName) {
       if (props[propName] !== undefined) {
         if (!floatValid(String(props[propName]))) {
-          return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be float.');
+          return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be float.`);
         }
       }
     }),
@@ -321,60 +320,60 @@ InputListFloat.propTypes = {
   min: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!floatValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be float.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be float.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["max"] !== undefined && props["max"] < props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than max.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than max.`);
       }
     }
   },
   max: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!floatValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be float.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be float.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["min"] !== undefined && props["min"] > props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than min.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than min.`);
       }
     }
   },
   minNo: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["maxNo"] !== undefined && props["maxNo"] < props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be lower than maxNo.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be lower than maxNo.`);
       }
     }
   },
   maxNo: function (props, propName, componentName) {
     if (props[propName] !== undefined) {
       if (!intValid(String(props[propName]))) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be integer.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be integer.`);
       }
 
       if (props[propName] < 0) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than zero or equal to zero.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than zero or equal to zero.`);
       }
 
       if (props["minNo"] !== undefined && props["minNo"] > props[propName]) {
-        return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Value must be greater than minNo.');
+        return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value must be greater than minNo.`);
       }
     }
   },
@@ -436,16 +435,17 @@ InputListFloat.defaultProps = {
 export const getErrors = function (e, props) {
 
   var new_value = getValue(e, props);
-
+  var i;
+  
   if (new_value !== undefined && new_value !== null) {
-    var warn_def = !(e.length === 0 && props.default !== undefined && props.required);
+    var warn_def = !(e.length === 0 && props.default && Array.isArray(props.default) && props.required && intValid(props.minNo) && filterInt(props.minNo) <= props.default.length && filterInt(props.minNo) > 0);
 
     if (!warn_def) {
       var sinvalid = [];
-      var err_minNo = (props.minNo !== undefined && floatValid(props.minNo) && filterFloat(props.minNo) > props.default.length);
-      var err_maxNo = (props.maxNo !== undefined && floatValid(props.maxNo) && filterFloat(props.maxNo) < props.default.length);
+      var err_minNo = warn_def && (intValid(props.minNo) && filterInt(props.minNo) >= props.default.length);
+      var err_maxNo = warn_def && (intValid(props.maxNo) && filterInt(props.maxNo) <= props.default.length);
 
-      for (var i = 0; i < props.default.length; i++) {
+      for (i = 0; i < props.default.length; i++) {
         sinvalid.push(valid(props.default[i], props)[3]);
       }
 
@@ -472,10 +472,10 @@ export const getErrors = function (e, props) {
       var emax = [];
       var etype = [];
 
-      var err_minNoV = (props.minNo !== undefined && floatValid(props.minNo) && filterFloat(props.minNo) > e.length);
-      var err_maxNoV = (props.maxNo !== undefined && floatValid(props.maxNo) && filterFloat(props.maxNo) < e.length);
+      var err_minNoV = warn_def && (props.minNo !== undefined && intValid(props.minNo) && filterInt(props.minNo) > e.length);
+      var err_maxNoV = warn_def && (props.maxNo !== undefined && intValid(props.maxNo) && filterInt(props.maxNo) < e.length);
       var validate;
-      for (var i = 0; i < e.length; i++) {
+      for (i = 0; i < e.length; i++) {
         validate = valid(e[i], props);
         emin.push(validate[0]);
         emax.push(validate[1]);

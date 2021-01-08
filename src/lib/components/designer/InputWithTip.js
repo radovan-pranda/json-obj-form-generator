@@ -40,11 +40,11 @@ export default class InputWithTip extends Component {
         </Col>
         <Col sm={this.props.smInput}>
           <Input
-            type={this.props.type} bsSize={this.props.size}
+            type={this.props.type} 
             placeholder={this.props.placeholder}
             min={this.props.min}
             bsSize={this.props.size}
-            min={this.props.max}
+            max={this.props.max}
             minLength={this.props.minLength}
             maxLength={this.props.maxLength}
             value={this.props.value}
