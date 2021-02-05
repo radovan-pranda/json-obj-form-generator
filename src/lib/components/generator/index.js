@@ -332,35 +332,6 @@ export const toMeta = {
     linear: valueToMeta_Linear
 }
 
-export const getValue = function (json, value, mode, sep) {
-    try {
-        var nextState = {};
-        var meta;
-        if (value !== undefined) {
-            meta = toMeta[mode](json, value, sep);
-            nextState.meta = meta[0];
-            nextState.errors = meta[1];
-            nextState.defaults = meta[2];
-            nextState.req = meta[3];
-            nextState.json = json;
-        }
-        else {
-            meta = jsonToMeta_Tree(json);
-            nextState.meta = meta[0];
-            nextState.errors = meta[1];
-            nextState.defaults = meta[2];
-            nextState.req = meta[3];
-            nextState.json = json;
-        }
-        var value = metaTo[mode](nextState.meta, nextState.defaults, nextState.req, nextState.errors, nextState.sep);
-        return [value, isValidValueJSON(json, value, mode, sep)];
-    }
-    catch
-    {
-        return [undefined, false];
-    }
-}
-
 export const isValidValueJSON = function (json, value, mode, sep) {
     try {
         var serial_mode = (mode && ["tree", "linear", "linear_merge"].includes(mode)) ? mode : "tree";

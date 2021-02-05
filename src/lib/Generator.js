@@ -24,6 +24,58 @@ export default class Generator extends Component {
     flag: false,
     fatal_error: false
   }
+ 
+  componentDidMount()
+  {
+    try {
+      var uids = getUids(this.props.json);
+      var meta = jsonToMeta(this.props.json);
+      var valid = jsonValid(meta);
+
+      if (!isValid(uids, valid, this.props.mode)) {
+        if (this.props.isValid) {
+          this.props.isValid(false);
+        }
+        return { fatal_error: true, flag: true };
+      }
+
+      var nextState = { fatal_error: false };
+
+      if (this.props.value !== undefined) {
+        meta = toMeta[this.props.mode](this.props.json, this.props.value, this.props.sep);
+        nextState.meta = meta[0];
+        nextState.errors = meta[1];
+        nextState.defaults = meta[2];
+        nextState.req = meta[3];
+        nextState.json = this.props.json;
+      }
+      else {
+        meta = jsonToMeta_Tree(this.props.json);
+        nextState.meta = meta[0];
+        nextState.errors = meta[1];
+        nextState.defaults = meta[2];
+        nextState.req = meta[3];
+        nextState.json = this.props.json;
+      }
+      
+      var invalid = invalidCheck(nextState.errors);
+      var val = metaTo[this.props.mode](nextState.meta, nextState.defaults, nextState.req, nextState.errors, this.props.sep);
+
+      if (this.props.onChange && val !== undefined) {
+        this.props.onChange(val, !invalid && Array.isArray(this.props.json))
+      }
+
+      if (this.props.isValid) {
+        this.props.isValid(!invalid && Array.isArray(this.props.json))
+      }
+    }
+    catch
+    {
+      if (this.props.isValid) {
+        this.props.isValid(false);
+      }
+    }
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
 
@@ -66,19 +118,7 @@ export default class Generator extends Component {
           nextState.req = meta[3];
           nextState.json = nextProps.json;
         }
-
-        var invalid = invalidCheck(nextState.errors);
-        var val = metaTo[nextProps.mode](nextState.meta, nextState.defaults, nextState.req, nextState.errors, nextProps.sep);
-
-        if (nextProps.onChange) {
-          nextProps.onChange(val, !invalid)
-        }
-
-        if (nextProps.isValid) {
-          nextProps.isValid(!invalid)
-        }
-
-        nextState.flag = true;
+        
         return nextState;
       }
       catch
