@@ -28,22 +28,27 @@ export default class Generator extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
 
     if (!prevState.flag) {
-      if (typeof nextProps.json !== "object" || !Array.isArray(nextProps.json)) {
+      if (!Array.isArray(nextProps.json)) {
         console.error("Parameter JSON must be array");
-        return { fatal_error: true }
+        if (nextProps.isValid) {
+          nextProps.isValid(false);
+        }
+        return { fatal_error: true, flag: true };
       }
 
-      var uids = getUids(nextProps.json);
-      var meta = jsonToMeta(nextProps.json);
-      var valid = jsonValid(meta);
-
       try {
+        var uids = getUids(nextProps.json);
+        var meta = jsonToMeta(nextProps.json);
+        var valid = jsonValid(meta);
+
         if (!isValid(uids, valid, nextProps.mode)) {
-          return { fatal_error: true };
+          if (nextProps.isValid) {
+            nextProps.isValid(false);
+          }
+          return { fatal_error: true, flag: true };
         }
 
         var nextState = { fatal_error: false };
-        //var meta;
 
         if (nextProps.value !== undefined) {
           meta = toMeta[nextProps.mode](nextProps.json, nextProps.value, nextProps.sep);
@@ -62,11 +67,26 @@ export default class Generator extends Component {
           nextState.json = nextProps.json;
         }
 
+        var invalid = invalidCheck(nextState.errors);
+        var val = metaTo[nextProps.mode](nextState.meta, nextState.defaults, nextState.req, nextState.errors, nextProps.sep);
+
+        if (nextProps.onChange) {
+          nextProps.onChange(val, !invalid)
+        }
+
+        if (nextProps.isValid) {
+          nextProps.isValid(!invalid)
+        }
+
+        nextState.flag = true;
         return nextState;
       }
       catch
       {
-        return { fatal_error: true }
+        if (nextProps.isValid) {
+          nextProps.isValid(false);
+        }
+        return { fatal_error: true, flag: true };
       }
     }
     else {
@@ -121,7 +141,7 @@ export default class Generator extends Component {
         (item, idx) => {
           var Tag;
           var gen;
-          
+
           if (genaliaseskeys.includes(item.type)) {
             gen = generator_aliases[item.type];
           }

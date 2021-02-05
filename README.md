@@ -67,4 +67,4 @@ import 'json-obj-form-generator/dist/css/generator.css';
 
 ## License
 
-MIT © [Radovan Pranda](https://github.com/radovan-pranda)
+MIT ©[Radovan Pranda](https://github.com/radovan-pranda)

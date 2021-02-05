@@ -120,7 +120,7 @@ export class Paragraph extends Component {
           </Col>
         </Row>
         <FormGroup row className="jofgen-D-form-group">
-          <Label size={this.props.size} className="jofgen-D-inputLabel" sm={2}>{this.props.translation.text}</Label>
+          <Label size={this.props.size} className="jofgen-D-inputLabel" sm={1}>{this.props.translation.text}</Label>
           <Col className="jofgen-D-input-col" >
             <Input
               name="text"
