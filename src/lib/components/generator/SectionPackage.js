@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Collapse, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, CardBody, Card, ButtonGroup } from 'reactstrap';
+import { Button, Collapse, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, CardBody, Card, ButtonGroup, Row, Col } from 'reactstrap';
 import { Default_keyPropType, keyPropType, translationUid, Default_translationUid } from './propTypes';
 import { error as invalidIcon } from './icons';
 import Container from './Container';
@@ -99,6 +99,7 @@ export class SectionPackage extends Component {
                                             </ListGroupItemHeading>
                                             <Collapse isOpen={this.state.list_opened[idx]}>
                                                 <ListGroupItemText>
+                                                    <Row>
                                                     {
                                                         (item.sub !== undefined) ?
                                                             item.sub.map(
@@ -118,7 +119,20 @@ export class SectionPackage extends Component {
                                                                     if (gen.useContainer) {
                                                                         return (
                                                                             <Fragment>
-                                                                                <Container key={sub_idx} {...sub_item} req_indicator={this.props.req_indicator} >
+                                                                                <Container key={sub_idx} 
+                                                                                    {...sub_item} 
+                                                                                    sm={
+                                                                                        (
+                                                                                          (sub_item.sm !== undefined && sub_item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(sub_item.sm))
+                                                                                            ? sub_item.sm
+                                                                                            : (
+                                                                                              (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                                                                                                ? this.props.sm
+                                                                                                : "12"
+                                                                                            )
+                                                                                        )
+                                                                                    }
+                                                                                    req_indicator={this.props.req_indicator} >
                                                                                     <Tag {...sub_item}
                                                                                         mode={this.props.mode}
                                                                                         errors={this.props.errors[item.uid][sub_item.uid]}
@@ -141,6 +155,18 @@ export class SectionPackage extends Component {
                                                                     else {
                                                                         return (
                                                                             <Fragment>
+                                                                                <Col sm={
+                                                                                    (
+                                                                                        (sub_item.sm !== undefined && sub_item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(sub_item.sm))
+                                                                                        ? sub_item.sm
+                                                                                        : (     
+                                                                                            (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                                                                                            ? this.props.sm
+                                                                                            : "12"
+                                                                                        )
+                                                                                    )
+                                                                                }
+                                                                                >
                                                                                 <Tag {...sub_item}
                                                                                     mode={this.props.mode}
                                                                                     errors={this.props.errors[item.uid][sub_item.uid]}
@@ -156,6 +182,7 @@ export class SectionPackage extends Component {
                                                                                     invalidCheck={this.props.invalidCheck}
                                                                                     generator_aliases={this.props.generator_aliases}
                                                                                 />
+                                                                                </Col>
                                                                             </Fragment>
                                                                         );
                                                                     }
@@ -163,6 +190,7 @@ export class SectionPackage extends Component {
                                                             )
                                                             : <></>
                                                     }
+                                                    </Row>
                                                 </ListGroupItemText>
                                             </Collapse>
                                         </ListGroupItem>
@@ -197,6 +225,7 @@ export class SectionPackage extends Component {
 
                                         return (
                                             <Fragment key={"sec-pack-" + idx}>
+                                                <Row>
                                                 {
                                                     (item.sub !== undefined) ? <>
                                                         {(item.desc !== undefined) ? <div className="jofgen-sec-stack-desc  text-muted">{item.desc}</div> : null}
@@ -217,7 +246,21 @@ export class SectionPackage extends Component {
                                                                 if (gen.useContainer) {
                                                                     return (
                                                                         <Fragment>
-                                                                            <Container key={"sec-" + sub_idx} {...sub_item} req_indicator={this.props.req_indicator} >
+                                                                            <Container 
+                                                                                key={"sec-" + sub_idx}
+                                                                                {...sub_item} 
+                                                                                sm={
+                                                                                    (
+                                                                                      (sub_item.sm !== undefined && sub_item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(sub_item.sm))
+                                                                                        ? sub_item.sm
+                                                                                        : (
+                                                                                          (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                                                                                            ? this.props.sm
+                                                                                            : "12"
+                                                                                        )
+                                                                                    )
+                                                                                }
+                                                                                req_indicator={this.props.req_indicator} >
                                                                                 <Tag {...sub_item}
                                                                                     mode={this.props.mode}
                                                                                     errors={this.props.errors[item.uid][sub_item.uid]}
@@ -240,6 +283,18 @@ export class SectionPackage extends Component {
                                                                 else {
                                                                     return (
                                                                         <Fragment>
+                                                                            <Col sm={
+                                                                                    (
+                                                                                        (sub_item.sm !== undefined && sub_item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(sub_item.sm))
+                                                                                        ? sub_item.sm
+                                                                                        : (     
+                                                                                            (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                                                                                            ? this.props.sm
+                                                                                            : "12"
+                                                                                        )
+                                                                                    )
+                                                                                }
+                                                                                >
                                                                             <Tag {...sub_item}
                                                                                 mode={this.props.mode}
                                                                                 req_indicator={this.props.req_indicator}
@@ -255,6 +310,7 @@ export class SectionPackage extends Component {
                                                                                 invalidCheck={this.props.invalidCheck}
                                                                                 generator_aliases={this.props.generator_aliases}
                                                                             />
+                                                                            </Col>
                                                                         </Fragment>
                                                                     );
                                                                 }
@@ -263,6 +319,7 @@ export class SectionPackage extends Component {
                                                         }
                                                     </> : <></>
                                                 }
+                                                </Row>
                                             </Fragment>
                                         );
                                     })
@@ -283,6 +340,7 @@ export class SectionPackage extends Component {
                                                 {(item.desc !== undefined) ? <div className="jofgen-sec-unlist-desc text-muted">{item.desc}</div> : <></>}
 
                                                 <div className="jofgen-sec-unlist-body">
+                                                    <Row>
                                                     {
                                                         (item.sub !== undefined) ?
                                                             item.sub.map(
@@ -302,7 +360,21 @@ export class SectionPackage extends Component {
                                                                     if (gen.useContainer) {
                                                                         return (
                                                                             <Fragment>
-                                                                                <Container key={sub_idx} {...sub_item} req_indicator={this.props.req_indicator} >
+                                                                                <Container 
+                                                                                    key={sub_idx} 
+                                                                                    {...sub_item} 
+                                                                                    sm={
+                                                                                        (
+                                                                                          (sub_item.sm !== undefined && sub_item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(sub_item.sm))
+                                                                                            ? sub_item.sm
+                                                                                            : (
+                                                                                              (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                                                                                                ? this.props.sm
+                                                                                                : "12"
+                                                                                            )
+                                                                                        )
+                                                                                    }
+                                                                                    req_indicator={this.props.req_indicator} >
                                                                                     <Tag {...sub_item}
                                                                                         mode={this.props.mode}
                                                                                         errors={this.props.errors[item.uid][sub_item.uid]}
@@ -325,6 +397,18 @@ export class SectionPackage extends Component {
                                                                     else {
                                                                         return (
                                                                             <Fragment>
+                                                                                <Col sm={
+                                                                                    (
+                                                                                        (sub_item.sm !== undefined && sub_item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(sub_item.sm))
+                                                                                        ? sub_item.sm
+                                                                                        : (     
+                                                                                            (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                                                                                            ? this.props.sm
+                                                                                            : "12"
+                                                                                        )
+                                                                                    )
+                                                                                }
+                                                                                >
                                                                                 <Tag {...sub_item}
                                                                                     mode={this.props.mode}
                                                                                     errors={this.props.errors[item.uid][sub_item.uid]}
@@ -340,6 +424,7 @@ export class SectionPackage extends Component {
                                                                                     invalidCheck={this.props.invalidCheck}
                                                                                     generator_aliases={this.props.generator_aliases}
                                                                                 />
+                                                                                </Col>
                                                                             </Fragment>
                                                                         );
                                                                     }
@@ -348,6 +433,7 @@ export class SectionPackage extends Component {
                                                             )
                                                             : <></>
                                                     }
+                                                    </Row>
                                                 </div>
                                             </CardBody>
                                         </Card>

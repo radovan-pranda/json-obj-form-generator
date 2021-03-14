@@ -187,14 +187,14 @@ export const valueToMeta_Tree = function (obj, val) {
         for (var i = 0; i < len; i++) {
             uid = obj[i].uid;
             if (obj[i].sub !== undefined) {
-                var subresult = valueToMeta_Tree(obj[i].sub, val[uid]);
+                var subresult = valueToMeta_Tree(obj[i].sub, (val != undefined && val != null && val[uid] !== undefined && val[uid] !== null)?val[uid]:undefined);
                 result[uid] = subresult[0];
                 errors[uid] = subresult[1];
                 defaultV[uid] = subresult[2];
                 req[uid] = subresult[3];
             }
             else {
-                if (val[uid] !== undefined && val[uid] !== null) {
+                if (val != undefined && val != null && val[uid] !== undefined && val[uid] !== null) {
                     result[uid] = val[uid];
                     errors[uid] = aliases[obj[i].type].getErrors(val[uid], obj[i]);
                     req[uid] = (obj[i].required) ? true : false;

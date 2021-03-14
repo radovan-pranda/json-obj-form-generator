@@ -1,6 +1,6 @@
 {
   "name": "json-obj-form-generator",
-  "version": "1.3.0",
+  "version": "1.3.2",
   "private": false,
   "babel": {
     "presets": [

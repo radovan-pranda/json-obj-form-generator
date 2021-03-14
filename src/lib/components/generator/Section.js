@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CardBody, Card } from 'reactstrap';
+import { CardBody, Card, Col, Row } from 'reactstrap';
 import Container from './Container';
 
 export class Section extends Component {
@@ -35,6 +35,7 @@ export class Section extends Component {
                     <b className="jofgen-sec-title">{(this.props.name === undefined) ? this.props.uid : this.props.name}</b>
                     {(this.props.desc !== undefined) ? <div className="jofgen-sec-desc text-muted">{this.props.desc}</div> : <></>}
                     <div className="jofgen-sec-body">
+                        <Row>
                         {
                             (this.props.sub !== undefined) ?
                                 this.props.sub.map(
@@ -54,7 +55,20 @@ export class Section extends Component {
                                         if (gen.useContainer) {
                                             return (
                                                 <Fragment key={sub_idx}>
-                                                    <Container {...sub_item} req_indicator={this.props.req_indicator} >
+                                                    <Container 
+                                                        {...sub_item} 
+                                                        sm={
+                                                            (
+                                                              (sub_item.sm !== undefined && sub_item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(sub_item.sm))
+                                                                ? sub_item.sm
+                                                                : (
+                                                                  (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                                                                    ? this.props.sm
+                                                                    : "12"
+                                                                )
+                                                            )
+                                                        }
+                                                        req_indicator={this.props.req_indicator} >
                                                         <Tag {...sub_item}
                                                             mode={this.props.mode}
                                                             errors={this.props.errors[sub_item.uid]}
@@ -77,6 +91,18 @@ export class Section extends Component {
                                         else {
                                             return (
                                                 <Fragment key={sub_idx}>
+                                                    <Col sm={
+                                                        (
+                                                            (sub_item.sm !== undefined && sub_item.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(sub_item.sm))
+                                                            ? sub_item.sm
+                                                            : (
+                                                                (this.props.sm !== undefined && this.props.sm !== null && ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].includes(this.props.sm))
+                                                                ? this.props.sm
+                                                                : "12"
+                                                            )
+                                                        )
+                                                    }
+                                                    >
                                                     <Tag {...sub_item}
                                                         mode={this.props.mode}
                                                         errors={this.props.errors[sub_item.uid]}
@@ -92,6 +118,7 @@ export class Section extends Component {
                                                         invalidCheck={this.props.invalidCheck}
                                                         generator_aliases={this.props.generator_aliases}
                                                     />
+                                                    </Col>
                                                 </Fragment>
                                             );
                                         }
@@ -99,6 +126,7 @@ export class Section extends Component {
                                 )
                                 : <></>
                         }
+                        </Row>
                     </div>
                 </CardBody>
             </Card>
